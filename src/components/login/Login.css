@@ -1,0 +1,71 @@
+/* src/components/login/Login.css */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #63b3ed, #4299e1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 450px; /* Incrementa el tamaño máximo de la tarjeta */
+    padding: 3rem; /* Incrementa el padding interno */
+    background-color: white;
+    border-radius: 0.75rem; /* Incrementa ligeramente el borde redondeado */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15); /* Ajusta la sombra para que sea más visible */
+    text-align: center;
+  }
+
+  .logo {
+    width: 180px; /* Aumenta el tamaño de la imagen */
+    height: auto;
+    margin-bottom: 1.5rem; /* Incrementa el margen inferior */
+  }
+
+  .card h1 {
+    font-size: 2.5rem; /* Aumenta el tamaño de la fuente del título */
+    font-weight: bold;
+    color: #2d3748;
+    margin-bottom: 1rem;
+  }
+
+  .card p {
+    font-size: 1rem; /* Incrementa el tamaño de la fuente del subtítulo */
+    color: #718096;
+    margin-bottom: 2rem; /* Incrementa el espacio debajo del texto */
+  }
+
+  .button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 1rem; /* Incrementa el padding para hacer el botón más grande */
+    background-color: #47abda;
+    color: white;
+    border: none;
+    border-radius: 0.5rem; /* Ajusta el borde del botón */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 1.125rem; /* Aumenta el tamaño de la fuente del botón */
+  }
+
+  .button:hover {
+    background-color: #6fc25b;
+  }
+
+  .button svg {
+    margin-right: 0.75rem; /* Ajusta el espacio entre el ícono y el texto */
+    width: 28px; /* Aumenta el tamaño del ícono */
+    height: 28px;
+  }
