@@ -1,4 +1,12 @@
-/* src/components/login/Login.css */
+/** * @file Login.css
+ * @description This is the file responsible for generating the styles of the login component
+ * @date Created: 29/08/2024
+ * @date Last Modified: 29/08/2024
+ * @author Andres Mauricio Ortiz
+ *         ortiz.andres@correounivalle.edu.co
+ * @note None
+*/
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;

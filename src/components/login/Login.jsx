@@ -1,3 +1,12 @@
+/** * @file Login.jsx
+ * @description This is the file responsible for generating the login component, where you log in with a Google account at the beginning.
+ * @date Created: 29/08/2024
+ * @date Last Modified: 29/08/2024
+ * @author Andres Mauricio Ortiz
+ *         ortiz.andres@correounivalle.edu.co
+ * @note None
+*/
+
 import './Login.css';
 
 function GoogleIcon(props) {
