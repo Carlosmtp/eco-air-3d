@@ -10,7 +10,7 @@
  * @note None
 */
 
-import logo from '../../assets/logo.png';
+import logoEccode from '../../assets/logo.png';
 import { BsGoogle } from "react-icons/bs";
 import './Login.css';
 
@@ -24,11 +24,12 @@ import './Login.css';
  */
 export default function Login() {
   return (
-    <div className="container">
+    <>
       <div className="card">
-        <img src={logo} alt="Eccode Studio Logo" style={{ width: '200px', height: 'auto', marginBottom: '1rem' }} />
+        <img className="logo" src={logoEccode} alt="Eccode Studio Logo" style={{ width: '200px', height: 'auto', marginBottom: '1rem' }} />
 
-        <h1>ECCODE STUDIO</h1>
+        <h1>Eco Air 3D</h1>
+        <h2>By EcoCode Studio</h2>
         <p>INNOVATING FOR CLEAN AIR</p>
 
         <button className="button">
@@ -36,6 +37,6 @@ export default function Login() {
           Sign in with Google
         </button>
       </div>
-    </div>
+    </>
   );
 }
