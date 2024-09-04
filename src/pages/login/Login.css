@@ -1,15 +1,3 @@
-/** * @file Login.css
- * @description This is the file responsible for generating the styles of the login component
- * @date Created: 29/08/2024
- * @date Last Modified: 03/09/2024
- * @author Andres Mauricio Ortiz
- *         ortiz.andres@correounivalle.edu.co
- * @author Carlos Mauricio Tovar Parra
- *         carlos.mauricio.tovar@correounivalle.edu.co
- * @note None
-*/
-
-
 .card {
   width: 80%;
   max-width: 400px;
