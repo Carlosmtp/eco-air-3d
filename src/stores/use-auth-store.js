@@ -19,6 +19,7 @@ const useAuthStore = create((set) => ({
     user: null, // Stores the current authenticated user
     loading: true, // Indicates whether the authentication state is being loaded
 
+    setUser: (user) => set({ user }),
     /**
      * @function loginGoogleWithPopUp
      * @description Initiates a Google sign-in process using a popup window. 
