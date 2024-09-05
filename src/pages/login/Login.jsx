@@ -11,10 +11,13 @@
  */
 
 import illustration from "../../assets/illustration.png";
-import logoTypeEccode from "../../assets/ecocode-logo-type.svg";
+import logoTypeEccode from "../../assets/ecocode-logo-type.png";
 import { BsGoogle } from "react-icons/bs";
 import "./Login.css";
-
+import { useCallback, useEffect } from 'react';
+import useAuthStore from "../../stores/use-auth-store"
+import { useNavigate } from "react-router-dom";
+//import UserDAO from "../../dao/UserDAO";
 /**
  * @component Login
  * @description A simple login component that displays the logo, a tagline, and a Google sign-in button.
@@ -23,22 +26,49 @@ import "./Login.css";
  * // Example usage:
  * <Login />
  */
-export default function Login() {
+
+const Login = () => {
+  const {user, loginGoogleWithPopUp, observeAuthState, loading } =
+    useAuthStore();  
+  const navigate = useNavigate ();
+
+  useEffect(()=>{
+    observeAuthState();
+  }, [observeAuthState]);
+
+  useEffect(()=>{
+    if (user) {
+      const newUser = {
+        email: user.email,
+        name: user.displayname,
+        photo: user.photoURL,
+      };
+      navigate("/World")
+
+    }
+  }, [user, navigate]);
+
+  const handleLogin = useCallback (() => {
+    loginGoogleWithPopUp(); 
+  }, [loginGoogleWithPopUp]);
+
   return (
     <div className="contenedor-login">
       <div className="card">
         <img className="illustration" src={illustration} alt="Eccode Studio Logo" />
         <h1>EcoAir3D APP</h1>
-        <button className="button">
+        <button className="button" onClick={handleLogin}>
           <BsGoogle />
           Sign in with Google
         </button>
-          <img
-            className="logo-type"
-            src={logoTypeEccode}
-            alt="Eccode Studio Logo Type"
-          />
+        <img
+          className="logo-type"
+          src={logoTypeEccode}
+          alt="Eccode Studio Logo Type"
+        />
       </div>
     </div>
   );
 }
+
+export default Login;
