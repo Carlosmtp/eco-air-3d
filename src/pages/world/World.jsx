@@ -1,3 +1,15 @@
+/** 
+ * @file World.js
+ * @description This component renders a 3D world with a sphere, lights, and orbit controls using react-three-fiber. 
+ *              It also provides an exit button to sign out the user.
+ * @date Created: 03/09/2024
+ * @date Last Modified: 05/09/2024
+ * @author Carlos Mauricio Tovar Parra
+ *         carlos.mauricio.tovar@correounivalle.edu.co
+ * @author Jhoimar Enrique Silva Torres
+ *         jhoimar.silva@correounivalle.edu.co
+ */
+
 /* eslint-disable react/no-unknown-property */
 import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
@@ -9,8 +21,15 @@ import { getAuth, signOut } from "firebase/auth";
 import { getFirestore, doc, deleteDoc } from "firebase/firestore";
 import useAuthStore from "../../stores/use-auth-store";
 
+/**
+ * @component World
+ * @description A 3D world component displaying a scene with a sphere and providing an exit button to sign out the user. 
+ * @returns {JSX.Element} The 3D world scene with a button for signing out.
+ * @example
+ * // Renders the World component with a sign-out button and a 3D scene:
+ * <World />
+ */
 const World = () => {
-
   const navigate = useNavigate();
   const { user, setUser } = useAuthStore();
   const auth = getAuth();

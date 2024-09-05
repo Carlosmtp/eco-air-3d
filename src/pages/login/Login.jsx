@@ -2,12 +2,13 @@
  * @file Login.jsx
  * @description This is the file responsible for generating the login component, where you log in with a Google account at the beginning.
  * @date Created: 29/08/2024
- * @date Last Modified: 03/09/2024
+ * @date Last Modified: 05/09/2024
  * @author Andres Mauricio Ortiz
  *         ortiz.andres@correounivalle.edu.co
  * @author Carlos Mauricio Tovar Parra
  *         carlos.mauricio.tovar@correounivalle.edu.co
- * @note None
+ * @author Jhoimar Enrique Silva Torres
+ *         jhoimar.silva@correounivalle.edu.co
  */
 
 import illustration from "../../assets/illustration.png";
