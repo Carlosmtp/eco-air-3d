@@ -1,7 +1,7 @@
 /** 
  * @file World.js
  * @description This component renders a 3D world with a sphere, lights, and orbit controls using react-three-fiber. 
- *              It also provides an exit button to sign out the user.
+ *              It also provides an user info component displaying the user's information (photo and name) and an exit button to sign out.
  * @date Created: 03/09/2024
  * @date Last Modified: 05/09/2024
  * @author Carlos Mauricio Tovar Parra
@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
 import { getFirestore, doc, deleteDoc } from "firebase/firestore";
 import useAuthStore from "../../stores/use-auth-store";
+import UserInfo from "./UserInfo";
 
 /**
  * @component World
@@ -35,29 +36,10 @@ const World = () => {
   const auth = getAuth();
   const db = getFirestore();
 
-  const handleExit = async () => {
-    try {
-      if (user) {
-        await deleteDoc(doc(db, "users", user.uid));
-      }
-
-      await signOut(auth);
-
-      setUser(null);
-    
-      navigate("/");
-    } catch (error) {
-      console.error("Error al salir:", error);
-      
-    }
-  };
-
 
   return (
     <div className="world-container">
-      <button className="exit-button" onClick={handleExit}>
-        Exit
-      </button>
+      <UserInfo />
       <React.Fragment>
         <Canvas>
           <OrbitControls enablePan={false} />
