@@ -11,15 +11,14 @@
 import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import React from "react";
-// import Sphere from "./Sphere";
-import Cat from "./Cat";
+import Sphere from "./Sphere";
 import "./World.css";
 
 /**
  * @component World
- * @description The `World` component renders a 3D scene using React Three Fiber and Drei utilities,
+ * @description The `World` component renders a 3D scene using React Three Fiber and Drei utilities, 
  * including a sphere with lighting and interactive camera controls.
- * @returns {JSX.Element} A JSX element containing a 3D scene with a sphere, ambient light, directional light,
+ * @returns {JSX.Element} A JSX element containing a 3D scene with a sphere, ambient light, directional light, 
  * and orbit controls for interaction.
  * @example
  * // Example usage:
@@ -29,11 +28,11 @@ const World = () => {
   return (
     <div className="world-container">
       <React.Fragment>
-        <Canvas camera={{ position: [0, 0, 2] }}>
+        <Canvas>
           <OrbitControls enablePan={false} />
           <ambientLight intensity={1.5} />
           <directionalLight position={[3, 10, 0]} intensity={4} />
-          <Cat />
+          <Sphere />
         </Canvas>
       </React.Fragment>
     </div>
