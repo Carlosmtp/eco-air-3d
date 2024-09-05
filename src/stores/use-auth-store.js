@@ -1,6 +1,6 @@
-/** 
+/**
  * @file useAuthStore.js
- * @description This file defines a Zustand store for managing authentication state within the web application. It provides methods for logging in with Google via a popup, logging out, and observing changes in the user's authentication state.
+ * @description This file defines a Zustand store for managing authentication state within the web application. It provides methods for logging in with Google via a popup, logging out, registering a new user with email/password, and observing changes in the user's authentication state.
  * @date Created: 28/08/2024
  * @date Last Modified: 28/08/2024
  * @author Carlos Mauricio Tovar Parra
@@ -9,9 +9,9 @@
  */
 
 import { create } from "zustand";
-import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
-import {  } from "firebase/auth";
-import { auth } from "../../firebase.config";
+import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut, createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../../firebase.config"; // Make sure Firebase is properly configured and initialized
+import { setDoc, doc, serverTimestamp } from "firebase/firestore";
 
 const provider = new GoogleAuthProvider();
 
@@ -20,6 +20,7 @@ const useAuthStore = create((set) => ({
     loading: true, // Indicates whether the authentication state is being loaded
 
     setUser: (user) => set({ user }),
+
     /**
      * @function loginGoogleWithPopUp
      * @description Initiates a Google sign-in process using a popup window. 
@@ -27,7 +28,6 @@ const useAuthStore = create((set) => ({
      * @async
      * @throws {FirebaseError} If an error occurs during the sign-in process.
      * @example
-     * * // Example usage in a React component:
      * const handleLogin = useCallback(() => {
      *    loginGoogleWithPopUp();
      * }, [loginGoogleWithPopUp]);
@@ -39,17 +39,45 @@ const useAuthStore = create((set) => ({
     },
 
     /**
+     * @function registerWithEmailAndPassword
+     * @description Registers a new user with an email and password, and saves additional user information in Firestore.
+     * @param {string} email - The user's email.
+     * @param {string} password - The user's password.
+     * @async
+     * @throws {FirebaseError} If an error occurs during the registration process.
+     * @example
+     * const handleRegister = useCallback(() => {
+     *    registerWithEmailAndPassword(email, password);
+     * }, [registerWithEmailAndPassword]);
+     */
+    registerWithEmailAndPassword: async (email, password) => {
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+            console.log('Usuario registrado:', user);
+
+            // Save additional user info in Firestore
+            await setDoc(doc(db, "users", user.uid), {
+                email: user.email,
+                createdAt: serverTimestamp()
+            });
+            console.log('Información del usuario guardada en Firestore');
+        } catch (error) {
+            console.error(`Error al registrar el usuario: ${error.code} - ${error.message}`);
+        }
+    },
+
+    /**
      * @function logout
      * @description Logs out the current user from the application.
      * If an error occurs during the sign-out process, it logs the error to the console.
      * @async
      * @throws {FirebaseError} If an error occurs during the sign-out process.
      * @example
-     * // Example usage in a React component:
-    * const handleLogout = useCallback(() => {
-    *    logout();
-    * }, [logout]);
-    */
+     * const handleLogout = useCallback(() => {
+     *    logout();
+     * }, [logout]);
+     */
     logout: async () => {
         await signOut(auth).catch((error) => {
             console.log(error);
@@ -61,7 +89,6 @@ const useAuthStore = create((set) => ({
      * @description Observes changes in the authentication state of the user. 
      * When the authentication state changes, it updates the user in the store and sets loading to false.
      * @example
-     * // Example usage in a React component:
      * useEffect(() => {
      *    observeAuthState();
      * }, [observeAuthState]);
