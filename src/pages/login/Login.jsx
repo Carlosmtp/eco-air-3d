@@ -11,7 +11,7 @@
  */
 
 import illustration from "../../assets/illustration.png";
-import logoTypeEccode from "../../assets/ecocode-logo-type.svg";
+import logoTypeEccode from "../../assets/ecocode-logo-type.png";
 import { BsGoogle } from "react-icons/bs";
 import "./Login.css";
 import { useCallback, useEffect } from 'react';
