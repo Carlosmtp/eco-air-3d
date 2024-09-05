@@ -42,8 +42,8 @@ const World = () => {
       <React.Fragment>
         <Canvas>
           <OrbitControls enablePan={false} />
-          <ambientLight intensity={1.5} />
-          <directionalLight position={[3, 10, 0]} intensity={4} />
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[3, 100, 0]} intensity={7} />
           <Sphere />
         </Canvas>
       </React.Fragment>
