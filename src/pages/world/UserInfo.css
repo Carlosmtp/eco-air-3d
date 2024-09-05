@@ -1,0 +1,19 @@
+.user-info {
+    height: 15%;
+    display: inline-flex;
+    position: absolute;
+    flex-direction: row; /* Mantiene los elementos en una fila */
+    align-items: center; /* Alinea los elementos en la parte superior */
+    justify-content: center; /* Alinea los elementos en el centro */
+}
+
+.user-photo {
+    width: 20%;
+    border-radius: 50%;
+    margin-right: 20px; /* Espacio a la derecha de la foto */
+}
+
+.user-name {
+    font-size: 20px;
+    color: rgb(50, 91, 35);
+}
