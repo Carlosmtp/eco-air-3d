@@ -18,7 +18,8 @@ import "./Login.css";
 import { useCallback, useEffect } from 'react';
 import useAuthStore from "../../stores/use-auth-store"
 import { useNavigate } from "react-router-dom";
-//import UserDAO from "../../dao/UserDAO";
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../../../firebase.config';
 /**
  * @component Login
  * @description A simple login component that displays the logo, a tagline, and a Google sign-in button.
@@ -37,15 +38,20 @@ const Login = () => {
     observeAuthState();
   }, [observeAuthState]);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (user) {
-      const newUser = {
-        email: user.email,
-        name: user.displayname,
-        photo: user.photoURL,
+      const saveUserToFirestore = async () => {
+        const userDocRef = doc(db, "users", user.uid); 
+        await setDoc(userDocRef, {
+          email: user.email,
+          name: user.displayName,
+          photo: user.photoURL,
+          lastLogin: new Date(), 
+        }, { merge: true }); 
       };
-      navigate("/World")
-
+      
+      saveUserToFirestore(); 
+      navigate("/World"); 
     }
   }, [user, navigate]);
 
