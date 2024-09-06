@@ -30,7 +30,7 @@ import { db } from '../../../firebase.config';
  */
 
 const Login = () => {
-  const {user, loginGoogleWithPopUp, observeAuthState, loading } =
+  const {user, loginGoogleWithPopUp, observeAuthState } =
     useAuthStore();  
   const navigate = useNavigate ();
 
