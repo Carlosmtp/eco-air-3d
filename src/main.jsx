@@ -10,6 +10,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css'
 import Login from './pages/login/Login.jsx'
 import World from './pages/world/World.jsx'
+import Greenhouse from './pages/greenhouse/Greenhouse.jsx';
 
 // Configure the router paths.
 const router = createBrowserRouter([
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
   {
     path: "/World",
     element: <World />,
+  },
+  {
+    path: "/greenhouse",
+    element: <Greenhouse />
   },
 ]);
 

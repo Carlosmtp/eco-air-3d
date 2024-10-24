@@ -1,6 +1,6 @@
-/** 
+/**
  * @file World.js
- * @description This component renders a 3D world with a sphere, lights, and orbit controls using react-three-fiber. 
+ * @description This component renders a 3D world with a sphere, lights, and orbit controls using react-three-fiber.
  *              It also provides an user info component displaying the user's information (photo and name) and an exit button to sign out.
  * @date Created: 03/09/2024
  * @date Last Modified: 05/09/2024
@@ -24,7 +24,7 @@ import UserInfo from "./UserInfo";
 
 /**
  * @component World
- * @description A 3D world component displaying a scene with a sphere and providing an exit button to sign out the user. 
+ * @description A 3D world component displaying a scene with a sphere and providing an exit button to sign out the user.
  * @returns {JSX.Element} The 3D world scene with a button for signing out.
  * @example
  * // Renders the World component with a sign-out button and a 3D scene:
