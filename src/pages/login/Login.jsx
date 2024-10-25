@@ -2,7 +2,7 @@
  * @file Login.jsx
  * @description This is the file responsible for generating the login component, where you log in with a Google account at the beginning.
  * @date Created: 29/08/2024
- * @date Last Modified: 05/09/2024
+ * @date Last Modified: 24/10/2024
  * @author Andres Mauricio Ortiz
  *         ortiz.andres@correounivalle.edu.co
  * @author Carlos Mauricio Tovar Parra
@@ -18,8 +18,7 @@ import "./Login.css";
 import { useCallback, useEffect } from 'react';
 import useAuthStore from "../../stores/use-auth-store"
 import { useNavigate } from "react-router-dom";
-import { doc, setDoc } from 'firebase/firestore';
-import { db } from '../../../firebase.config';
+
 /**
  * @component Login
  * @description A simple login component that displays the logo, a tagline, and a Google sign-in button.
@@ -40,17 +39,6 @@ const Login = () => {
 
   useEffect(() => {
     if (user) {
-      const saveUserToFirestore = async () => {
-        const userDocRef = doc(db, "users", user.uid); 
-        await setDoc(userDocRef, {
-          email: user.email,
-          name: user.displayName,
-          photo: user.photoURL,
-          lastLogin: new Date(), 
-        }, { merge: true }); 
-      };
-      
-      saveUserToFirestore(); 
       navigate("/World"); 
     }
   }, [user, navigate]);
