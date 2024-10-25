@@ -17,6 +17,7 @@ import { BsGoogle } from "react-icons/bs";
 import "./Login.css";
 import { useCallback, useEffect } from 'react';
 import useAuthStore from "../../stores/use-auth-store"
+import LoginScene from "./LoginScene";
 import { useNavigate } from "react-router-dom";
 
 /**
@@ -49,6 +50,7 @@ const Login = () => {
 
   return (
     <div className="contenedor-login">
+      <LoginScene />
       <div className="card">
         <img className="illustration" src={illustration} alt="Eccode Studio Logo" />
         <h1>EcoAir3D APP</h1>

@@ -14,7 +14,7 @@ import { useEffect } from "react"; // For managing side effects
 
 /**
  * @component UserInfo
- * @description A component that displays the authenticated user's profile picture and name. 
+ * @description A component that displays the authenticated user's profile picture and name.
  *              It also provides a button to sign out.
  * @returns {JSX.Element} A JSX element displaying the user's profile info and an exit button.
  */
@@ -76,9 +76,14 @@ const UserInfo = () => {
         )}
       </div>
 
-      <button className="exit-button" onClick={handleExit}>
-        Exit
-      </button>
+      <div className="buttons-container">
+        <button className="top-button" onClick={() => alert("Top 10 feature is currently under development.")}>
+          Top 10
+        </button>
+        <button className="exit-button" onClick={handleExit}>
+          Exit
+        </button>
+      </div>
     </>
   );
 };
