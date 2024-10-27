@@ -74,3 +74,10 @@ body {
   height: 300px; /* Set a fixed height for the canvas */
   text-align: center; /* Center text within the canvas container */
 }
+
+
+.canvas-container:hover {
+  cursor: pointer;
+  box-shadow: #1758ca 2px 2px 5px;
+  text-shadow: #0d47a1 2px 2px;
+}
