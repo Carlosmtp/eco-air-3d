@@ -53,13 +53,16 @@ const UserInfo = () => {
     // Display a loading state while authentication data is being fetched
     return <p>Loading user information...</p>;
   }
-
+  const photo = user.photoURL;
+  //alert(photo);
   return (
     <>
       <div className="user-info">
         {/* Conditionally rendering the user photo */}
         {user && user.photoURL ? (
-          <img className="user-photo" src={user.photoURL} alt="User Profile" />
+          <img className="user-photo" src={photo} alt="User Profile" crossOrigin="anonymous">
+          {console.log(photo)}
+          </img>
         ) : (
           <img
             className="user-photo"
@@ -77,6 +80,9 @@ const UserInfo = () => {
       </div>
 
       <div className="buttons-container">
+      <button className="top-button" onClick={() => navigate("/world")}>
+          Home
+        </button>
         <button className="top-button" onClick={() => alert("Top 10 feature is currently under development.")}>
           Top 10
         </button>
