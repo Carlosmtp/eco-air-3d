@@ -80,6 +80,9 @@ const UserInfo = () => {
       </div>
 
       <div className="buttons-container">
+      <button className="top-button" onClick={() => navigate("/world")}>
+          Home
+        </button>
         <button className="top-button" onClick={() => alert("Top 10 feature is currently under development.")}>
           Top 10
         </button>
