@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /**
  * @file World.jsx
  * @description This component renders a 3D world with an animated title and placeholder cubes representing environmental issues.
@@ -18,6 +19,7 @@ import UserInfo from "./UserInfo";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader";
 import { Text } from "@react-three/drei";
 import { useNavigate } from "react-router-dom";
+import useAuthStore from "../../stores/use-auth-store"; // Zustand store for managing authentication state
 
 // RotatingCube - A simple rotating cube as a placeholder for future 3D models.
 const RotatingCube = () => {
@@ -83,7 +85,13 @@ const Title3D = () => {
 
 // World - Main component rendering the title and 3D placeholders.
 const World = () => {
+const { user, setUser, loading, observeAuthState } = useAuthStore(); // Zustand store to manage current user state and loading
   const navigate = useNavigate();
+
+  if(!user){
+    navigate("/");
+  }
+  
   return (
     <div className="world-container">
       <UserInfo />

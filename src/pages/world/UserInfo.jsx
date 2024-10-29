@@ -36,11 +36,12 @@ const UserInfo = () => {
    */
   const handleExit = async () => {
     try {
-      // Sign out the user from Firebase Authentication
-      await signOut(auth);
 
       // Clear user from Zustand store
       setUser(null);
+
+      // Sign out the user from Firebase Authentication
+      await signOut(auth);
 
       // Redirect to home page
       navigate("/");
