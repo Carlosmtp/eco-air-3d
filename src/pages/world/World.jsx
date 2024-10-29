@@ -3,11 +3,19 @@
  * @description This component renders a 3D world with a sphere, lights, and orbit controls using react-three-fiber.
  *              It also provides an user info component displaying the user's information (photo and name) and an exit button to sign out.
  * @date Created: 03/09/2024
+<<<<<<< Updated upstream
  * @date Last Modified: 05/09/2024
  * @author Carlos Mauricio Tovar Parra
  *         carlos.mauricio.tovar@correounivalle.edu.co
  * @author Jhoimar Enrique Silva Torres
  *         jhoimar.silva@correounivalle.edu.co
+=======
+ * @date Last Modified: 25/10/2024
+ * @authors
+ * Carlos Mauricio Tovar Parra - carlos.mauricio.tovar@correounivalle.edu.co
+ * Jhoimar Enrique Silva Torres - jhoimar.silva@correounivalle.edu.co
+ * Andres Mauricio Ortiz Bermudez - ortiz.andres@correounivalle.edu.co
+>>>>>>> Stashed changes
  */
 
 /* eslint-disable react/no-unknown-property */
