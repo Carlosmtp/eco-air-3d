@@ -133,7 +133,11 @@ const { user, setUser, loading, observeAuthState } = useAuthStore(); // Zustand 
           </Canvas>
           <h2 className="canvas-title">Efecto Invernadero</h2>
           <p className="canvas-description">
-            Breve texto sobre el impacto del efecto invernadero.
+          El efecto invernadero es el proceso por el cual ciertos
+          gases atrapan el calor en la atmósfera, manteniendo la Tierra habitable.
+          Sin embargo, las actividades humanas han intensificado este fenómeno,
+          provocando el calentamiento global y sus efectos: aumento de temperaturas,
+          derretimiento de glaciares y fenómenos climáticos extremos.
           </p>
         </div>
 
