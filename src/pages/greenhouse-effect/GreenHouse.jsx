@@ -1,3 +1,14 @@
+/**
+ * @file GreenHouse.jsx
+* GreenHouse component renders an interactive 3D scene that simulates the Greenhouse Effect.
+* It includes Earth, an ozone layer, the Moon, and a cubemap background, with controls for zooming and info modal.
+* @returns {JSX.Element} A fully interactive 3D greenhouse simulation.
+* @date Created: 27/10/2024
+ * @updated: 31/10/2024
+ * @author Andres Mauricio Ortiz
+ *         ortiz.andres@correounivalle.edu.co
+ */
+
 import { Suspense, useEffect, useRef, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
@@ -10,22 +21,29 @@ import Cubemap from './Cubemap';
 import ZoomButton from './ZoomButton';
 import InfoButton from './InfoButton';
 
-const GreenHouse = () => {
-  const [zoomedIn, setZoomedIn] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const cameraRef = useRef();
 
+const GreenHouse = () => {
+  const [zoomedIn, setZoomedIn] = useState(false); // State to manage zoom level
+  const [showModal, setShowModal] = useState(false); // State to control info modal visibility
+  const cameraRef = useRef(); // Reference to camera object for zoom manipulation
+
+  /**
+   * Toggles zoom state between zoomed-in and zoomed-out positions.
+   */
   const toggleZoom = () => {
     setZoomedIn((prev) => !prev);
   };
 
+  /**
+   * Toggles the modal's visibility for displaying additional information.
+   */
   const toggleModal = () => {
     setShowModal((prev) => !prev);
   };
 
   useEffect(() => {
     if (cameraRef.current) {
-      cameraRef.current.position.set(0, 1, zoomedIn ? 4 : 2);
+      cameraRef.current.position.set(0, 1, zoomedIn ? 4 : 2); // Adjusts camera position based on zoom state
     }
   }, [zoomedIn]);
 
@@ -69,9 +87,11 @@ const GreenHouse = () => {
         <OrbitControls />
       </Canvas>
 
+      {/* Zoom and Info buttons */}
       <ZoomButton zoomedIn={zoomedIn} toggleZoom={toggleZoom} />
       <InfoButton toggleModal={toggleModal} />
 
+      {/* Info modal */}
       {showModal && (
         <div className="modal-overlay" onClick={toggleModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>

@@ -1,7 +1,8 @@
 /**
- * @file Moon.jsx
- * @description This component renders a 3D scene showcasing the OzoneLayer.
- * @date Created: 28/10/2024
+ * @file OzoneLayer.jsx
+ * @description  * OzoneLayer component that renders a semi-transparent 3D sphere representing the Earth's ozone layer.
+ * @returns {JSX.Element} A 3D sphere mesh with a translucent material simulating the ozone layer.
+ * @date Created: 27/10/2024
  * @updated: 31/10/2024
  * @author Andres Mauricio Ortiz
  *         ortiz.andres@correounivalle.edu.co
