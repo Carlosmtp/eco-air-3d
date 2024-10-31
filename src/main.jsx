@@ -12,6 +12,7 @@ import World from './pages/world/World.jsx'
 import Greenhouse from './pages/greenhouse-effect/GreenHouse.jsx'
 import OzoneLayer from './pages/ozone-layer/OzoneLayer.jsx'
 import Smog from './pages/smog/Smog.jsx'
+import Welcome from './pages/world/Welcome.jsx'
 
 // Configure the router paths.
 const router = createBrowserRouter([
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
   {
     path: "/smog",
     element: <Smog />,
+  },
+  {
+    path: "/Welcome",
+    element: <Welcome />,
   }
 ]);
 
