@@ -1,8 +1,9 @@
+/* eslint-disable react/no-unknown-property */
 /**
  * @file Login.jsx
  * @description This is the file responsible for generating the login component, where you log in with a Google account at the beginning.
  * @date Created: 29/08/2024
- * @date Last Modified: 05/09/2024
+ * @date Last Modified: 24/10/2024
  * @author Andres Mauricio Ortiz
  *         ortiz.andres@correounivalle.edu.co
  * @author Carlos Mauricio Tovar Parra
@@ -11,58 +12,69 @@
  *         jhoimar.silva@correounivalle.edu.co
  */
 
-import illustration from "../../assets/illustration.png";
-import logoTypeEccode from "../../assets/ecocode-logo-type.png";
-import { BsGoogle } from "react-icons/bs";
-import "./Login.css";
-import { useCallback, useEffect } from 'react';
-import useAuthStore from "../../stores/use-auth-store"
+import { Canvas, useFrame } from "@react-three/fiber";
+import { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { doc, setDoc } from 'firebase/firestore';
-import { db } from '../../../firebase.config';
+import useAuthStore from "../../stores/use-auth-store";
+import { BsGoogle } from "react-icons/bs";
+import { useRef } from "react";
+import "./Login.css";
+import logoTypeEccode from "../../assets/ecocode-logo-type.png";
+import LoginScene from "./LoginScene";
+
 /**
- * @component Login
- * @description A simple login component that displays the logo, a tagline, and a Google sign-in button.
- * @returns {JSX.Element} A container with a card displaying the Eccode Studio logo, name, tagline, and a Google sign-in button.
- * @example
- * // Example usage:
- * <Login />
+ * @component Cube
+ * @description A 3D cube that rotates continuously.
+ * @returns {JSX.Element} A rotating cube.
  */
+const Cube = () => {
+  // Create a reference for the mesh
+  const meshRef = useRef();
+
+  // Use the frame hook to animate the cube
+  useFrame(() => {
+    if (meshRef.current) {
+      meshRef.current.rotation.x += 0.01; // Rotate on x-axis
+      meshRef.current.rotation.y += 0.01; // Rotate on y-axis
+    }
+  });
+
+  return (
+    <mesh ref={meshRef}>
+      <boxGeometry args={[3, 3, 3]} />
+      <meshStandardMaterial color="orange" />
+    </mesh>
+  );
+};
 
 const Login = () => {
-  const {user, loginGoogleWithPopUp, observeAuthState } =
-    useAuthStore();  
-  const navigate = useNavigate ();
+  const { user, loginGoogleWithPopUp, observeAuthState } = useAuthStore();
+  const navigate = useNavigate();
 
-  useEffect(()=>{
+  useEffect(() => {
     observeAuthState();
   }, [observeAuthState]);
 
   useEffect(() => {
     if (user) {
-      const saveUserToFirestore = async () => {
-        const userDocRef = doc(db, "users", user.uid); 
-        await setDoc(userDocRef, {
-          email: user.email,
-          name: user.displayName,
-          photo: user.photoURL,
-          lastLogin: new Date(), 
-        }, { merge: true }); 
-      };
-      
-      saveUserToFirestore(); 
-      navigate("/World"); 
+      navigate("/World");
     }
   }, [user, navigate]);
 
-  const handleLogin = useCallback (() => {
-    loginGoogleWithPopUp(); 
+  const handleLogin = useCallback(() => {
+    loginGoogleWithPopUp();
   }, [loginGoogleWithPopUp]);
 
   return (
     <div className="contenedor-login">
+      <LoginScene />
       <div className="card">
-        <img className="illustration" src={illustration} alt="Eccode Studio Logo" />
+        <Canvas className="illustration">
+        <ambientLight intensity={0.5} color={"#ffffff"} />
+          <pointLight position={[5, 5, 5]} intensity={1.2} color={"#ffffff"} />
+          <directionalLight position={[-5, -5, 5]} intensity={0.7} color={"#ffffff"} />
+          <Cube />
+        </Canvas>
         <h1>EcoAir3D APP</h1>
         <button className="button" onClick={handleLogin}>
           <BsGoogle />
@@ -76,6 +88,6 @@ const Login = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Login;

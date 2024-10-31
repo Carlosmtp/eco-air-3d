@@ -1,5 +1,7 @@
 .user-info {
-    height: 15%;
+    top: 0;
+    left: 0;
+    height: 10%;
     display: inline-flex;
     position: absolute;
     flex-direction: row; /* Mantiene los elementos en una fila */
@@ -8,9 +10,9 @@
 }
 
 .user-photo {
-    width: 20%;
-    border-radius: 50%;
-    margin-right: 20px; /* Espacio a la derecha de la foto */
+    width: 10%;
+    border-radius: 10%;
+    margin-right: 10px; /* Espacio a la derecha de la foto */
 }
 
 .user-name {

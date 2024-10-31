@@ -7,10 +7,11 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import './index.css'
 import Login from './pages/login/Login.jsx'
 import World from './pages/world/World.jsx'
-import Greenhouse from './pages/greenhouse/Greenhouse.jsx';
+import Greenhouse from './pages/greenhouse-effect/GreenHouse.jsx'
+import OzoneLayer from './pages/ozone-layer/OzoneLayer.jsx'
+import Smog from './pages/smog/Smog.jsx'
 
 // Configure the router paths.
 const router = createBrowserRouter([
@@ -19,13 +20,21 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "/World",
+    path: "/world",
     element: <World />,
   },
   {
-    path: "/greenhouse",
-    element: <Greenhouse />
+    path: "/green-house",
+    element: <Greenhouse />,
   },
+  {
+    path: "/ozone-layer",
+    element: <OzoneLayer />,
+  },
+  {
+    path: "/smog",
+    element: <Smog />,
+  }
 ]);
 
 // Render the application into the DOM element with id 'root'.

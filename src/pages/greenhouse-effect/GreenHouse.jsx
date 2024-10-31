@@ -17,7 +17,7 @@ import UserInfo from "../world/UserInfo";
 import EarthModel from './EarthModel';
 import OzoneLayer from './OzoneLayer';
 import Moon from './Moon';
-import './Greenhouse.css';
+import './GreenHouse.css';
 
 
 const GreenHouse = () => {
