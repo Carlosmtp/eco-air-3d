@@ -5,12 +5,12 @@
  * The component provides controls for user interaction and visualizes
  * environmental elements with realistic lighting and shadows.
  * @date Created: 27/10/2024
- * @updated: 28/10/2024
+ * @updated: 31/10/2024
  * @author Andres Mauricio Ortiz
  *         ortiz.andres@correounivalle.edu.co
  */
 
-import React, { Suspense } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment } from '@react-three/drei';
 import UserInfo from "../world/UserInfo";
@@ -18,21 +18,57 @@ import EarthModel from './EarthModel';
 import OzoneLayer from './OzoneLayer';
 import Moon from './Moon';
 import './GreenHouse.css';
+import Cubemap from './Cubemap';
 
 
 const GreenHouse = () => {
+
+  const [zoomedIn, setZoomedIn] = useState(false); // Estado para manejar el zoom
+  const cameraRef = useRef(); // Referencia a la cámara
+
+  const toggleZoom = () => {
+    setZoomedIn((prev) => !prev);
+  };
+
+  useEffect(() => {
+    if (cameraRef.current) {
+      if (zoomedIn) {
+        cameraRef.current.position.set(0, 1, 4); //acercar
+      } else {
+        cameraRef.current.position.set(0, 1, 2); // alejar
+      }
+    }
+  }, [zoomedIn]);
+
+  const cubemapImages = [
+    '/cubemapSpace/right.png',  // posx
+    '/cubemapSpace/left.png',   // negx
+    '/cubemapSpace/top.png',    // posy
+    '/cubemapSpace/bottom.png', // negy
+    '/cubemapSpace/front.png',  // posz
+    '/cubemapSpace/back.png',   // negz
+  ];
+
   return (
     <div className="greenhouse-container">
       <UserInfo />
-      <Canvas shadows camera={{ position: [0, 3, 6], fov: 60 }}>
+      <Canvas
+        shadows
+        camera={{ position: [0, 1, 2], fov: 45 }}
+        onCreated={({ camera }) => (cameraRef.current = camera)}
+      >
         <Suspense fallback={null}>
           {/* Optional: <Environment files="/textures/space.hdr" background /> */}
+
+          <Cubemap images={cubemapImages} />
+
           <ambientLight intensity={0.1} />
           <directionalLight
-            castShadow
-            position={[5, 10, 5]}
+            position={[5, 0, 5]}
             intensity={1.5}
-            shadow-mapSize={{ width: 2048, height: 2048 }}
+            castShadow
+            shadow-mapSize-width={2048}
+            shadow-mapSize-height={2048}
             shadow-camera-far={50}
             shadow-camera-left={-10}
             shadow-camera-right={10}
@@ -48,6 +84,26 @@ const GreenHouse = () => {
 
         <OrbitControls />
       </Canvas>
+
+      {/* Botón de acercar/alejar */}
+      <button
+        onClick={toggleZoom}
+        style={{
+          position: 'absolute',
+          bottom: '20px',
+          right: '20px',
+          padding: '10px 20px',
+          fontSize: '16px',
+          backgroundColor: '#007bff',
+          color: 'white',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer',
+        }}
+      >
+        {zoomedIn ? 'Alejar' : 'Acercar'}
+      </button>
+
     </div>
   );
 };

@@ -2,12 +2,11 @@
  * @file Moon.jsx
  * @description This component renders a 3D scene showcasing the OzoneLayer.
  * @date Created: 28/10/2024
- * @updated: 28/10/2024
+ * @updated: 31/10/2024
  * @author Andres Mauricio Ortiz
  *         ortiz.andres@correounivalle.edu.co
  */
 
-import React from 'react';
 import * as THREE from 'three';
 
 function OzoneLayer() {
