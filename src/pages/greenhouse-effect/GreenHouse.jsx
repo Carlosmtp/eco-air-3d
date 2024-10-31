@@ -1,15 +1,3 @@
-/**
- * @file GreenHouse.jsx
- * @description This component renders a 3D interactive scene simulating
- * the Greenhouse Effect, including Earth, an Ozone layer, and the Moon.
- * The component provides controls for user interaction and visualizes
- * environmental elements with realistic lighting and shadows.
- * @date Created: 27/10/2024
- * @updated: 31/10/2024
- * @author Andres Mauricio Ortiz
- *         ortiz.andres@correounivalle.edu.co
- */
-
 import { Suspense, useEffect, useRef, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment } from '@react-three/drei';
@@ -20,20 +8,23 @@ import Moon from './Moon';
 import './GreenHouse.css';
 import Cubemap from './Cubemap';
 
-
 const GreenHouse = () => {
-
   const [zoomedIn, setZoomedIn] = useState(false); // Estado para manejar el zoom
+  const [showModal, setShowModal] = useState(false); // Estado para manejar el modal
   const cameraRef = useRef(); // Referencia a la cámara
 
   const toggleZoom = () => {
     setZoomedIn((prev) => !prev);
   };
 
+  const toggleModal = () => {
+    setShowModal((prev) => !prev);
+  };
+
   useEffect(() => {
     if (cameraRef.current) {
       if (zoomedIn) {
-        cameraRef.current.position.set(0, 1, 4); //acercar
+        cameraRef.current.position.set(0, 1, 4); // acercar
       } else {
         cameraRef.current.position.set(0, 1, 2); // alejar
       }
@@ -104,6 +95,79 @@ const GreenHouse = () => {
         {zoomedIn ? 'Alejar' : 'Acercar'}
       </button>
 
+      {/* Botón de Más Información */}
+      <button
+        onClick={toggleModal}
+        style={{
+          position: 'absolute',
+          bottom: '20px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          padding: '10px 20px',
+          fontSize: '16px',
+          backgroundColor: '#28a745',
+          color: 'white',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer',
+        }}
+      >
+        Más Información
+      </button>
+
+      {/* Modal de Información */}
+      {showModal && (
+        <div
+          style={{
+            position: 'fixed',
+            top: '0',
+            left: '0',
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: '1000',
+          }}
+          onClick={toggleModal} // Cierra el modal al hacer clic fuera del contenido
+        >
+          <div
+            style={{
+              backgroundColor: 'white',
+              padding: '20px',
+              borderRadius: '8px',
+              width: '80%',
+              maxWidth: '500px',
+              textAlign: 'center',
+              position: 'relative',
+              color: '#333',
+            }}
+            onClick={(e) => e.stopPropagation()} // Evita cerrar el modal al hacer clic dentro del contenido
+          >
+            <h2>Efecto Invernadero</h2>
+            <p>El efecto invernadero es fundamental para mantener la temperatura de nuestro planeta.
+              Sin embargo, las actividades humanas han intensificado este proceso, atrapando más calor en la
+              atmósfera y contribuyendo al cambio climático. Este fenómeno provoca un aumento de las temperaturas,
+              alteraciones en los ecosistemas y fenómenos meteorológicos extremos, afectando a todas las
+              formas de vida en la Tierra.</p>
+            <button
+              onClick={toggleModal}
+              style={{
+                position: 'absolute',
+                top: '10px',
+                right: '10px',
+                backgroundColor: 'transparent',
+                border: 'none',
+                fontSize: '20px',
+                cursor: 'pointer',
+              }}
+            >
+              &times;
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
