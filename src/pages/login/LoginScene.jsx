@@ -3,13 +3,12 @@
  * @file LoginScene.jsx
  * @description This file defines the login 3D scene of the application with cubemap sky environment and camera movement based on mouse input.
  * @date Created: 24/10/2024
- * @date Last Modified: 24/10/2024
+ * @date Last Modified: 31/10/2024
  */
 
 import { MapControls, Environment } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import React, { useRef, useEffect } from "react";
-import Sphere from "./Sphere";
 import "./Login.css";
 
 // Componente para manejar el movimiento de la cámara con el mouse
@@ -49,9 +48,7 @@ const LoginScene = () => {
           <CameraController />
 
           <MapControls enablePan={false} />
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[3, 100, 0]} intensity={7} />
-
+          
           {/* Cargar el Environment usando el cubemap */}
           <Environment
             files={[
@@ -64,8 +61,6 @@ const LoginScene = () => {
             ]}
             background
           />
-
-          <Sphere />
         </Canvas>
       </React.Fragment>
     </div>

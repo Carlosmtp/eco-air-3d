@@ -2,8 +2,8 @@
 /**
  * @file Login.jsx
  * @description This is the file responsible for generating the login component, where you log in with a Google account at the beginning.
- * @date Created: 29/08/2024
- * @date Last Modified: 24/10/2024
+ * @date Created: 29/10/2024
+ * @date Last Modified: 31/10/2024
  * @author Andres Mauricio Ortiz
  *         ortiz.andres@correounivalle.edu.co
  * @author Carlos Mauricio Tovar Parra
@@ -11,45 +11,27 @@
  * @author Jhoimar Enrique Silva Torres
  *         jhoimar.silva@correounivalle.edu.co
  */
-
-import { Canvas, useFrame } from "@react-three/fiber";
-import { useCallback, useEffect } from "react";
+import { Canvas } from "@react-three/fiber";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { SpotLightHelper } from "three";
 import useAuthStore from "../../stores/use-auth-store";
 import { BsGoogle } from "react-icons/bs";
-import { useRef } from "react";
 import "./Login.css";
 import logoTypeEccode from "../../assets/ecocode-logo-type.png";
 import LoginScene from "./LoginScene";
-
-/**
- * @component Cube
- * @description A 3D cube that rotates continuously.
- * @returns {JSX.Element} A rotating cube.
- */
-const Cube = () => {
-  // Create a reference for the mesh
-  const meshRef = useRef();
-
-  // Use the frame hook to animate the cube
-  useFrame(() => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x += 0.01; // Rotate on x-axis
-      meshRef.current.rotation.y += 0.01; // Rotate on y-axis
-    }
-  });
-
-  return (
-    <mesh ref={meshRef}>
-      <boxGeometry args={[3, 3, 3]} />
-      <meshStandardMaterial color="orange" />
-    </mesh>
-  );
-};
+import Earth from "./Earth";
+import Clouds from "./Clouds";
 
 const Login = () => {
   const { user, loginGoogleWithPopUp, observeAuthState } = useAuthStore();
   const navigate = useNavigate();
+
+  // Estado para la posición de la cámara y nubes
+  const [cameraPosition, setCameraPosition] = useState([0, 0, 5]);
+  const [cloudsPosition, setCloudsPosition] = useState([0, 0, 3.5]);
+
+  const spotlightRef = useRef(); // Referencia para el SpotLight
 
   useEffect(() => {
     observeAuthState();
@@ -57,7 +39,7 @@ const Login = () => {
 
   useEffect(() => {
     if (user) {
-      navigate("/World");
+      navigate("/Welcome");
     }
   }, [user, navigate]);
 
@@ -65,15 +47,61 @@ const Login = () => {
     loginGoogleWithPopUp();
   }, [loginGoogleWithPopUp]);
 
+  // Manejar movimiento del mouse
+  const handleMouseMove = (event) => {
+    const { clientX, clientY } = event;
+    const x = (clientX / window.innerWidth) * 2 - 1;
+    const y = -(clientY / window.innerHeight) * 2 + 1;
+
+    setCameraPosition([x, y, 5]);
+
+    const newCloudsX = x * 0.5;
+    const newCloudsY = y * 0.5;
+    const cloudLimit = 0.3;
+    const clampedX = Math.max(-cloudLimit, Math.min(cloudLimit, newCloudsX));
+    const clampedY = Math.max(-cloudLimit, Math.min(cloudLimit, newCloudsY));
+
+    setCloudsPosition([clampedX, clampedY, 3.5]);
+  };
+
+  useEffect(() => {
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
+  // Agregar SpotLightHelper para ver las líneas del cono de luz
+  useEffect(() => {
+    if (spotlightRef.current) {
+      const helper = new SpotLightHelper(spotlightRef.current);
+      spotlightRef.current.add(helper);
+      
+      return () => helper.dispose(); // Limpiar el helper al desmontar
+    }
+  }, []);
+
   return (
     <div className="contenedor-login">
       <LoginScene />
       <div className="card">
-        <Canvas className="illustration">
-        <ambientLight intensity={0.5} color={"#ffffff"} />
-          <pointLight position={[5, 5, 5]} intensity={1.2} color={"#ffffff"} />
-          <directionalLight position={[-5, -5, 5]} intensity={0.7} color={"#ffffff"} />
-          <Cube />
+        <Canvas shadows className="illustration">
+          <ambientLight intensity={1} color={"#FFFFFF"} />
+          <spotLight
+            ref={spotlightRef}
+            position={[0, 0, 5]}
+            intensity={5}
+            color={"white"}
+            angle={Math.PI / 2}
+            castShadow
+            shadow-mapSize-width={1024}
+            shadow-mapSize-height={1024}
+            shadow-camera-far={10}
+            shadow-camera-near={0.1}
+          />
+          <Clouds position={cloudsPosition} />
+          <perspectiveCamera position={cameraPosition} fov={75} />
+          <Earth position={[0, 0, 0.9]} />
         </Canvas>
         <h1>EcoAir3D APP</h1>
         <button className="button" onClick={handleLogin}>
