@@ -20,13 +20,13 @@ import UserInfo from "./UserInfo";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader";
 import { Text } from "@react-three/drei";
 import { useNavigate } from "react-router-dom";
-import useAuthStore from "../../stores/use-auth-store"; // Zustand store for managing authentication state
+import useAuthStore from "../../stores/use-auth-store"; // Estado de autenticación con Zustand
 
-// RotatingCube - A simple rotating cube as a placeholder for future 3D models.
+// RotatingCube - Componente de un cubo giratorio como marcador de posición para futuros modelos 3D.
 const RotatingCube = () => {
   const cubeRef = useRef();
 
-  // Rotate the cube slightly on each frame render
+  // Rotación del cubo en cada renderizado de frame
   useFrame(() => {
     cubeRef.current.rotation.x += 0.01;
     cubeRef.current.rotation.y += 0.01;
@@ -40,14 +40,14 @@ const RotatingCube = () => {
   );
 };
 
-// Title3D - Component to render the 3D title and move it with mouse.
+// Title3D - Componente que renderiza el título en 3D y lo mueve según el mouse.
 const Title3D = () => {
-  const font = new FontLoader().load("/path/to/font.json"); // Replace with your font path
+  const font = new FontLoader().load("/path/to/font.json"); // Reemplaza con la ruta de tu fuente
   const titleRef = useRef();
 
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
 
-  // Update mouse position on mouse move
+  // Actualización de la posición del mouse
   useEffect(() => {
     const handleMouseMove = (event) => {
       setMouse({
@@ -63,11 +63,11 @@ const Title3D = () => {
     };
   }, []);
 
-  // Update title position based on mouse position
+  // Actualizar la posición del título en función de la posición del mouse
   useFrame(() => {
     if (titleRef.current) {
-      titleRef.current.position.x = mouse.x * 1.5; // Adjust the multiplier for sensitivity
-      titleRef.current.position.y = mouse.y * 1.5; // Adjust the multiplier for sensitivity
+      titleRef.current.position.x = mouse.x * 1.5; // Ajusta el multiplicador para sensibilidad
+      titleRef.current.position.y = mouse.y * 1.5; // Ajusta el multiplicador para sensibilidad
     }
   });
 
@@ -75,21 +75,21 @@ const Title3D = () => {
     <Text
       ref={titleRef}
       font={font}
-      scale={[3, 3, 3]} // Adjust scale for smaller text
-      position={[8, 1.5, -4]} // Position in the scene, adjusted to be closer to the camera
-      color="#000000" // Text color
+      scale={[3, 3, 3]} // Ajuste de escala para texto más pequeño
+      position={[8, 1.5, -4]} // Posición en la escena, ajustada más cerca de la cámara
+      color="#000000" // Color del texto
     >
       Problemas medioambientales del aire
     </Text>
   );
 };
 
-// World - Main component rendering the title and 3D placeholders.
+// World - Componente principal que renderiza el título y marcadores de posición en 3D.
 const World = () => {
-const { user, setUser, loading, observeAuthState } = useAuthStore(); // Zustand store to manage current user state and loading
+  const { user, setUser, loading, observeAuthState } = useAuthStore(); // Estado del usuario actual y carga
   const navigate = useNavigate();
 
-  if(!user){
+  if (!user) {
     navigate("/");
   }
 
@@ -97,19 +97,17 @@ const { user, setUser, loading, observeAuthState } = useAuthStore(); // Zustand 
     <div className="world-container">
       <UserInfo />
 
-      {/* 3D title */}
+      {/* Título en 3D */}
       <Canvas style={{ height: "200px", width: "100%" }}>
-        {" "}
-        {/* Adjust height and width */}
         <ambientLight intensity={0.5} />
         <directionalLight position={[2, 2, 5]} intensity={1} />
         <OrbitControls enablePan={false} enableZoom={false} />
         <Title3D />
       </Canvas>
 
-      {/* 3D placeholders for each environmental issue */}
+      {/* Marcadores de posición en 3D para cada problema ambiental */}
       <div className="canvas-row">
-        {/* Ozone Layer Canvas */}
+        {/* Canvas de la Capa de Ozono */}
         <div className="canvas-container" onClick={() => navigate("/ozone-layer")}>
           <Canvas>
             <ambientLight intensity={0.5} />
@@ -119,11 +117,11 @@ const { user, setUser, loading, observeAuthState } = useAuthStore(); // Zustand 
           </Canvas>
           <h2 className="canvas-title">Capa de Ozono</h2>
           <p className="canvas-description">
-            Breve texto que describa el problema de la capa de ozono.
+            La capa de ozono es una barrera protectora en la atmósfera que absorbe la mayor parte de la radiación ultravioleta del sol, pero está siendo dañada por contaminantes.
           </p>
         </div>
 
-        {/* Greenhouse Effect Canvas */}
+        {/* Canvas del Efecto Invernadero */}
         <div className="canvas-container" onClick={() => navigate("/green-house")}>
           <Canvas>
             <ambientLight intensity={0.5} />
@@ -141,7 +139,7 @@ const { user, setUser, loading, observeAuthState } = useAuthStore(); // Zustand 
           </p>
         </div>
 
-        {/* Smog Canvas */}
+        {/* Canvas del Smog */}
         <div className="canvas-container" onClick={() => navigate("/smog")}>
           <Canvas>
             <ambientLight intensity={0.5} />
@@ -151,7 +149,7 @@ const { user, setUser, loading, observeAuthState } = useAuthStore(); // Zustand 
           </Canvas>
           <h2 className="canvas-title">Smog</h2>
           <p className="canvas-description">
-            Descripción corta sobre el smog y sus efectos.
+            El smog es una forma de contaminación del aire formada principalmente por emisiones de vehículos y fábricas, que afecta la salud y reduce la visibilidad.
           </p>
         </div>
       </div>
