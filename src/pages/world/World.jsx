@@ -108,7 +108,10 @@ const World = () => {
       {/* Marcadores de posición en 3D para cada problema ambiental */}
       <div className="canvas-row">
         {/* Canvas de la Capa de Ozono */}
-        <div className="canvas-container" onClick={() => navigate("/ozone-layer")}>
+        <div
+          className="canvas-container"
+          onClick={() => navigate("/ozone-layer")}
+        >
           <Canvas>
             <ambientLight intensity={0.5} />
             <directionalLight position={[2, 2, 5]} intensity={1} />
@@ -117,12 +120,17 @@ const World = () => {
           </Canvas>
           <h2 className="canvas-title">Capa de Ozono</h2>
           <p className="canvas-description">
-            La capa de ozono es una barrera protectora en la atmósfera que absorbe la mayor parte de la radiación ultravioleta del sol, pero está siendo dañada por contaminantes.
+            La capa de ozono es una barrera protectora en la atmósfera que
+            absorbe la mayor parte de la radiación ultravioleta del sol, pero
+            está siendo dañada por contaminantes.
           </p>
         </div>
 
         {/* Canvas del Efecto Invernadero */}
-        <div className="canvas-container" onClick={() => navigate("/green-house")}>
+        <div
+          className="canvas-container"
+          onClick={() => navigate("/green-house")}
+        >
           <Canvas>
             <ambientLight intensity={0.5} />
             <directionalLight position={[2, 2, 5]} intensity={1} />
@@ -131,11 +139,10 @@ const World = () => {
           </Canvas>
           <h2 className="canvas-title">Efecto Invernadero</h2>
           <p className="canvas-description">
-          El efecto invernadero es el proceso por el cual ciertos
-          gases atrapan el calor en la atmósfera, manteniendo la Tierra habitable.
-          Sin embargo, las actividades humanas han intensificado este fenómeno,
-          provocando el calentamiento global y sus efectos: aumento de temperaturas,
-          derretimiento de glaciares y fenómenos climáticos extremos.
+            El efecto invernadero permite que ciertos gases retengan calor en la
+            atmósfera. Las actividades humanas han intensificado este proceso,
+            causando el calentamiento global y sus efectos: aumento de
+            temperaturas, derretimiento de glaciares y fenómenos extremos.
           </p>
         </div>
 
@@ -149,7 +156,9 @@ const World = () => {
           </Canvas>
           <h2 className="canvas-title">Smog</h2>
           <p className="canvas-description">
-            El smog es una forma de contaminación del aire formada principalmente por emisiones de vehículos y fábricas, que afecta la salud y reduce la visibilidad.
+            El smog es una forma de contaminación del aire formada
+            principalmente por emisiones de vehículos y fábricas, que afecta la
+            salud y reduce la visibilidad.
           </p>
         </div>
       </div>
