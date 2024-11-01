@@ -1,16 +1,17 @@
-/* eslint-disable no-unused-vars */
 /**
- * @file World.jsx
- * @description Este componente renderiza un mundo 3D con un título animado y cubos de marcador de posición que representan problemas ambientales.
- *              Cada canvas muestra un cubo de marcador de posición para futuros modelos 3D, junto con un título y una descripción.
+ * @file World.js
+ * @description This component renders a 3D world with a sphere, lights, and orbit controls using react-three-fiber.
+ *              It also provides an user info component displaying the user's information (photo and name) and an exit button to sign out.
  * @date Created: 03/09/2024
- * @date Last Modified: 31/10/2024
- * @authors
- * Carlos Mauricio Tovar Parra - carlos.mauricio.tovar@correounivalle.edu.co
- * Jhoimar Enrique Silva Torres - jhoimar.silva@correounivalle.edu.co
+ * @date Last Modified: 05/09/2024
+ * @author Carlos Mauricio Tovar Parra
+ *         carlos.mauricio.tovar@correounivalle.edu.co
+ * @author Jhoimar Enrique Silva Torres
+ *         jhoimar.silva@correounivalle.edu.co
  */
 
 /* eslint-disable react/no-unknown-property */
+
 import { OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useRef, useEffect, useState } from "react";
@@ -130,7 +131,11 @@ const World = () => {
           </Canvas>
           <h2 className="canvas-title">Efecto Invernadero</h2>
           <p className="canvas-description">
-            El efecto invernadero es un proceso natural que calienta la superficie de la Tierra, pero la actividad humana ha aumentado su impacto, causando el calentamiento global.
+          El efecto invernadero es el proceso por el cual ciertos
+          gases atrapan el calor en la atmósfera, manteniendo la Tierra habitable.
+          Sin embargo, las actividades humanas han intensificado este fenómeno,
+          provocando el calentamiento global y sus efectos: aumento de temperaturas,
+          derretimiento de glaciares y fenómenos climáticos extremos.
           </p>
         </div>
 
