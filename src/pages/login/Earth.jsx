@@ -33,6 +33,8 @@ const Earth = (props) => {
                                 name="Icosphere001_0"
                                 geometry={nodes.Icosphere001_0.geometry}
                                 material={materials.material}
+                                castShadow
+                                receiveShadow
                             />
                             <mesh
                                 name="Icosphere001_1"

@@ -9,13 +9,14 @@
   }
 
   .info-container {
-    background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco semi-transparente */
+    background-color: rgba(255, 255, 255, 0.8);
     color: black;
-    border-radius: 10px; /* Bordes redondeados */
-    padding: 20px; /* Espaciado interno */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
-    width: 400px; /* Ancho de la caja */
-    position: absolute; /* Asegura que esté en la posición correcta */
-    right: 5%; /* Ajusta según sea necesario */
-    text-align: left; /* Alinea el texto a la izquierda para mayor legibilidad */
+    border-radius: 10px; 
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    position: absolute;
+    right: 5%;
+    top: 15%;
+    text-align: left;
   }

@@ -1,9 +1,10 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unknown-property */
 /**
  * @file Login.jsx
  * @description This is the file responsible for generating the login component, where you log in with a Google account at the beginning.
  * @date Created: 29/10/2024
- * @date Last Modified: 31/10/2024
+ * @date Last Modified: 1/11/2024
  * @author Andres Mauricio Ortiz
  *         ortiz.andres@correounivalle.edu.co
  * @author Carlos Mauricio Tovar Parra
@@ -14,7 +15,7 @@
 import { Canvas } from "@react-three/fiber";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { SpotLightHelper } from "three";
+
 import useAuthStore from "../../stores/use-auth-store";
 import { BsGoogle } from "react-icons/bs";
 import "./Login.css";
@@ -29,9 +30,7 @@ const Login = () => {
 
   // Estado para la posición de la cámara y nubes
   const [cameraPosition, setCameraPosition] = useState([0, 0, 5]);
-  const [cloudsPosition, setCloudsPosition] = useState([0, 0, 3.5]);
-
-  const spotlightRef = useRef(); // Referencia para el SpotLight
+  const [cloudsPosition, setCloudsPosition] = useState([0, 0, 3.7]);
 
   useEffect(() => {
     observeAuthState();
@@ -71,26 +70,15 @@ const Login = () => {
     };
   }, []);
 
-  // Agregar SpotLightHelper para ver las líneas del cono de luz
-  useEffect(() => {
-    if (spotlightRef.current) {
-      const helper = new SpotLightHelper(spotlightRef.current);
-      spotlightRef.current.add(helper);
-      
-      return () => helper.dispose(); // Limpiar el helper al desmontar
-    }
-  }, []);
-
   return (
     <div className="contenedor-login">
       <LoginScene />
       <div className="card">
         <Canvas shadows className="illustration">
           <ambientLight intensity={1} color={"#FFFFFF"} />
-          <spotLight
-            ref={spotlightRef}
-            position={[0, 0, 5]}
-            intensity={5}
+          <directionalLight
+          position={[2, 2, 5]}
+          intensity={4}
             color={"white"}
             angle={Math.PI / 2}
             castShadow
@@ -98,7 +86,8 @@ const Login = () => {
             shadow-mapSize-height={1024}
             shadow-camera-far={10}
             shadow-camera-near={0.1}
-          />
+          >
+            </directionalLight>
           <Clouds position={cloudsPosition} />
           <perspectiveCamera position={cameraPosition} fov={75} />
           <Earth position={[0, 0, 0.9]} />
