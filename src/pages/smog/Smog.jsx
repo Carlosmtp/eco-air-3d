@@ -8,12 +8,18 @@
 
 import { Canvas } from "@react-three/fiber";
 import UserInfo from "../world/UserInfo";
-
+import LittleCity from "./LittleCity";
+import "./Smog.css"
 const Smog = () => {
   return (
     <div className="smog-container">
-      <UserInfo />
-      <Canvas>{/* Empty canvas for Smog component */}</Canvas>
+      <UserInfo /> <div className="city-container">
+      <Canvas>
+        <directionalLight position={[5, 5, 5]} intensity={5} />
+        <LittleCity 
+        scale={[1.5, 1.5, 1.5]}/>
+      </Canvas>
+      </div>
     </div>
   );
 };
