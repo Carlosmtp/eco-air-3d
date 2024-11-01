@@ -29,9 +29,7 @@ const Login = () => {
 
   // Estado para la posición de la cámara y nubes
   const [cameraPosition, setCameraPosition] = useState([0, 0, 5]);
-  const [cloudsPosition, setCloudsPosition] = useState([0, 0, 3.5]);
-
-  const spotlightRef = useRef(); // Referencia para el SpotLight
+  const [cloudsPosition, setCloudsPosition] = useState([0, 0, 3.7]);
 
   useEffect(() => {
     observeAuthState();
@@ -71,26 +69,15 @@ const Login = () => {
     };
   }, []);
 
-  // Agregar SpotLightHelper para ver las líneas del cono de luz
-  useEffect(() => {
-    if (spotlightRef.current) {
-      const helper = new SpotLightHelper(spotlightRef.current);
-      spotlightRef.current.add(helper);
-      
-      return () => helper.dispose(); // Limpiar el helper al desmontar
-    }
-  }, []);
-
   return (
     <div className="contenedor-login">
       <LoginScene />
       <div className="card">
         <Canvas shadows className="illustration">
           <ambientLight intensity={1} color={"#FFFFFF"} />
-          <spotLight
-            ref={spotlightRef}
-            position={[0, 0, 5]}
-            intensity={5}
+          <directionalLight
+          position={[2, 2, 5]}
+          intensity={5}
             color={"white"}
             angle={Math.PI / 2}
             castShadow
@@ -98,7 +85,8 @@ const Login = () => {
             shadow-mapSize-height={1024}
             shadow-camera-far={10}
             shadow-camera-near={0.1}
-          />
+          >
+            </directionalLight>
           <Clouds position={cloudsPosition} />
           <perspectiveCamera position={cameraPosition} fov={75} />
           <Earth position={[0, 0, 0.9]} />

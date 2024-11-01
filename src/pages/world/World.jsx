@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /**
  * @file World.js
  * @description This component renders a 3D world with a sphere, lights, and orbit controls using react-three-fiber.
@@ -139,10 +140,12 @@ const World = () => {
           </Canvas>
           <h2 className="canvas-title">Efecto Invernadero</h2>
           <p className="canvas-description">
-            El efecto invernadero permite que ciertos gases retengan calor en la
-            atmósfera. Las actividades humanas han intensificado este proceso,
-            causando el calentamiento global y sus efectos: aumento de
-            temperaturas, derretimiento de glaciares y fenómenos extremos.
+            El efecto invernadero es el proceso por el cual ciertos gases
+            atrapan el calor en la atmósfera, manteniendo la Tierra habitable.
+            Sin embargo, las actividades humanas han intensificado este
+            fenómeno, provocando el calentamiento global y sus efectos: aumento
+            de temperaturas, derretimiento de glaciares y fenómenos climáticos
+            extremos.
           </p>
         </div>
 
