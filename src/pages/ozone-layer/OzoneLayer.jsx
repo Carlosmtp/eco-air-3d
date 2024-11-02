@@ -12,6 +12,7 @@ import { Canvas } from "@react-three/fiber";
 import { Line, Text, useTexture } from "@react-three/drei";
 import UserInfo from "../world/UserInfo";
 import Earth from "../login/Earth";
+import Clouds from "../login/Clouds";
 import IntroCard from "./IntroCard"; 
 import "./OzoneLayer.css";
 import { useMemo } from "react";
@@ -39,8 +40,16 @@ const Scene = () => {
 
   return (
     <>
-      <ambientLight />
-      <directionalLight position={[5, 5, 5]} intensity={5} />
+      <ambientLight intensity={0.5} />
+      <directionalLight
+        position={[5, 5, 5]}
+        intensity={5}
+        castShadow // Enable shadow casting
+        shadow-mapSize-width={1024}
+        shadow-mapSize-height={1024}
+        shadow-camera-far={10}
+        shadow-camera-near={0.1}
+      />
       {/* Lines representing sunlight */}
       <Line points={[[5, 5, 5], [3, 0, 0]]} color="yellow" lineWidth={2} />
       <Line points={[[5, 5, 5], [0, 3, 0]]} color="yellow" lineWidth={2} />
@@ -50,7 +59,7 @@ const Scene = () => {
       <Text position={[4.5, 0.5, 0]} fontSize={0.5} color="blue">UVC</Text>
       <Text position={[1.8, 3.7, 0]} fontSize={0.5} color="blue">UVA</Text>
       {/* Sphere representing the ozone layer */}
-      <mesh>
+      <mesh castShadow receiveShadow>
         <sphereGeometry args={[3, 32, 32]} />
         <meshStandardMaterial
           map={colorMap}          
@@ -62,7 +71,8 @@ const Scene = () => {
         />
       </mesh>
       {/* Earth */}
-      <Earth position={[0, 0, 0]} scale={[2, 2, 2]} />
+      <Earth position={[0, 0, 0]} scale={[2, 2, 2]} castShadow receiveShadow />
+      <Clouds position={[0, 0, 3]}/>
     </>
   );
 };
@@ -72,7 +82,7 @@ const OzoneLayer = () => {
     <div className="ozone-layer-container">
       <UserInfo />
       <div className="ozone-canvas">
-        <Canvas>
+        <Canvas shadows>
           <Scene />
         </Canvas>
       </div>
