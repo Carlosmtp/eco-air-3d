@@ -1,12 +1,11 @@
 /**
  * @file GreenHouse.jsx
-* GreenHouse component renders an interactive 3D scene that simulates the Greenhouse Effect.
-* It includes Earth, an ozone layer, the Moon, and a cubemap background, with controls for zooming and info modal.
-* @returns {JSX.Element} A fully interactive 3D greenhouse simulation.
-* @date Created: 27/10/2024
- * @updated: 31/10/2024
- * @author Andres Mauricio Ortiz
- *         ortiz.andres@correounivalle.edu.co
+ * GreenHouse component renders an interactive 3D scene that simulates the Greenhouse Effect.
+ * It includes Earth, an ozone layer, the Moon, and a cubemap background, with controls for zooming and info modal.
+ * @returns {JSX.Element} A fully interactive 3D greenhouse simulation.
+ * @date Created: 27/10/2024
+ * @updated: 08/11/2024 - Added functionality to move the entire scene with a zoom button
+ * @autor Andres Mauricio Ortiz
  */
 
 import { Suspense, useEffect, useRef, useState } from 'react';
@@ -21,29 +20,35 @@ import Cubemap from './Cubemap';
 import ZoomButton from './ZoomButton';
 import InfoButton from './InfoButton';
 
-
 const GreenHouse = () => {
-  const [zoomedIn, setZoomedIn] = useState(false); // State to manage zoom level
-  const [showModal, setShowModal] = useState(false); // State to control info modal visibility
-  const cameraRef = useRef(); // Reference to camera object for zoom manipulation
+  const [zoomedIn, setZoomedIn] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const cameraRef = useRef(); // Referencia para la cámara
+  const groupRef = useRef(); // Referencia para toda la escena
 
   /**
-   * Toggles zoom state between zoomed-in and zoomed-out positions.
+   * Alternar el estado de zoom para la escena completa.
    */
   const toggleZoom = () => {
     setZoomedIn((prev) => !prev);
   };
 
   /**
-   * Toggles the modal's visibility for displaying additional information.
+   * Ajustar la posición y la escala de toda la escena al hacer zoom.
    */
-  const toggleModal = () => {
-    setShowModal((prev) => !prev);
-  };
-
   useEffect(() => {
-    if (cameraRef.current) {
-      cameraRef.current.position.set(0, 1, zoomedIn ? 4 : 2); // Adjusts camera position based on zoom state
+    if (cameraRef.current && groupRef.current) {
+      // Ajustar la posición del grupo completo (escena)
+      groupRef.current.position.set(
+        zoomedIn ? -0.70 : 0,
+        zoomedIn ? -0.30 : 0,
+        zoomedIn ? 0 : 0
+      );
+      groupRef.current.scale.set(zoomedIn ? 1.5 : 1, zoomedIn ? 1.5 : 1, zoomedIn ? 1.5 : 1);
+
+      // Ajustar el campo de visión (fov) de la cámara para acercar o alejar
+      cameraRef.current.fov = zoomedIn ? 30 : 45; // Cambia el valor según tu preferencia
+      cameraRef.current.updateProjectionMatrix(); // Importante para que el cambio tenga efecto
     }
   }, [zoomedIn]);
 
@@ -63,47 +68,58 @@ const GreenHouse = () => {
         shadows
         camera={{ position: [0, 1, 2], fov: 45 }}
         onCreated={({ camera }) => (cameraRef.current = camera)}
+        // onPointerMove={(event) => {
+        //   if (groupRef.current) {
+        //     groupRef.current.position.x += event.movementX * 0.01;
+        //     groupRef.current.position.y -= event.movementY * 0.01;
+        //     console.log(`Posición del grupo: [${groupRef.current.position.x.toFixed(2)}, ${groupRef.current.position.y.toFixed(2)}, ${groupRef.current.position.z.toFixed(2)}]`);
+        //   }
+        // }}
       >
         <Suspense fallback={null}>
-          <Cubemap images={cubemapImages} />
-          <ambientLight intensity={0.1} />
-          <directionalLight
-            position={[5, 0, 5]}
-            intensity={1.5}
-            castShadow
-            shadow-mapSize-width={2048}
-            shadow-mapSize-height={2048}
-            shadow-camera-far={50}
-            shadow-camera-left={-10}
-            shadow-camera-right={10}
-            shadow-camera-top={10}
-            shadow-camera-bottom={-10}
-          />
-          <pointLight position={[-10, 10, -10]} intensity={0.5} />
-          <EarthModel />
-          <OzoneLayer />
-          <Moon />
+          <group ref={groupRef}>
+            <Cubemap images={cubemapImages} />
+            <ambientLight intensity={0.1} />
+            <directionalLight
+              position={[5, 0, 5]}
+              intensity={1.5}
+              castShadow
+              shadow-mapSize-width={2048}
+              shadow-mapSize-height={2048}
+              shadow-camera-far={50}
+              shadow-camera-left={-10}
+              shadow-camera-right={10}
+              shadow-camera-top={10}
+              shadow-camera-bottom={-10}
+            />
+            <pointLight position={[-10, 10, -10]} intensity={0.5} />
+
+            {/* Modelos dentro del grupo */}
+            <EarthModel />
+            <OzoneLayer />
+            <Moon />
+          </group>
         </Suspense>
-        <OrbitControls />
+
+        <OrbitControls/>
+
       </Canvas>
 
-      {/* Zoom and Info buttons */}
+      {/* Botones de Zoom e Información */}
       <ZoomButton zoomedIn={zoomedIn} toggleZoom={toggleZoom} />
-      <InfoButton toggleModal={toggleModal} />
+      <InfoButton toggleModal={() => setShowModal(!showModal)} />
 
-      {/* Info modal */}
+      {/* Modal de Información */}
       {showModal && (
-        <div className="modal-overlay" onClick={toggleModal}>
+        <div className="modal-overlay" onClick={() => setShowModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <h2>Comprendiendo el Efecto Invernadero</h2>
             <p>
               El efecto invernadero es fundamental para mantener la temperatura de nuestro planeta.
               Sin embargo, las actividades humanas han intensificado este proceso, atrapando más calor en la
-              atmósfera y contribuyendo al cambio climático. Este fenómeno provoca un aumento de las temperaturas,
-              alteraciones en los ecosistemas y fenómenos meteorológicos extremos, afectando a todas las
-              formas de vida en la Tierra.
+              atmósfera y contribuyendo al cambio climático.
             </p>
-            <button className="close-button" onClick={toggleModal}>&times;</button>
+            <button className="close-button" onClick={() => setShowModal(false)}>&times;</button>
           </div>
         </div>
       )}

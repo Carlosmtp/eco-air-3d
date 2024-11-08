@@ -16,7 +16,7 @@ function OzoneLayer() {
       <sphereGeometry args={[0.52, 64, 64]} />
       <meshPhysicalMaterial
         transparent
-        opacity={0.1}
+        opacity={0.3}
         roughness={0.5}
         color="#00aaff"
         side={THREE.BackSide}
