@@ -14,7 +14,7 @@ import { useGLTF } from '@react-three/drei';
 const Clouds = (props) => {
     const { nodes, materials } = useGLTF('/clouds.glb');
     return (
-        <group {...props} dispose={null} scale={[3, 3, 3]}>
+        <group {...props} dispose={null}>
           <mesh castShadow receiveShadow geometry={nodes.Node.geometry} material={materials.mat21} />
         </group>
       )

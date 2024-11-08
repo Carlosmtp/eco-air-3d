@@ -24,7 +24,7 @@ const Earth = (props) => {
     });
 
     return (
-        <group ref={earthRef} {...props} dispose={null} scale={[2.5, 2.5, 2.5]}>
+        <group ref={earthRef} {...props} dispose={null}>
             <group name="Sketchfab_Scene">
                 <group name="Sketchfab_model" rotation={[-Math.PI / 2, 0, 0]}>
                     <group name="Root">
