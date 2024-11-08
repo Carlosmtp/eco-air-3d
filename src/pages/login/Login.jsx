@@ -88,9 +88,9 @@ const Login = () => {
             shadow-camera-near={0.1}
           >
             </directionalLight>
-          <Clouds position={cloudsPosition} />
+          <Clouds position={cloudsPosition} scale={[3, 3, 3]}/>
           <perspectiveCamera position={cameraPosition} fov={75} />
-          <Earth position={[0, 0, 0.9]} />
+          <Earth position={[0, 0, 0.9]} scale={[2.5, 2.5, 2.5]}/>
         </Canvas>
         <h1>EcoAir3D APP</h1>
         <button className="button" onClick={handleLogin}>
