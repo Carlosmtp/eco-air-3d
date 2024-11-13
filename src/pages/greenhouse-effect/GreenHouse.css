@@ -67,3 +67,26 @@
     font-size: 20px;
     cursor: pointer;
   }
+
+  @keyframes scroll {
+    0% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-200%);
+      opacity: 0;
+    }
+  }
+
+  .scrolling-text {
+    animation: scroll 40s linear forwards; /* Cambiado a "forwards" para que solo se reproduzca una vez */
+    color: yellow;
+    font-size: 1em;
+    text-align: center;
+    width: 200px;
+    line-height: 1.2;
+  }

@@ -10,7 +10,7 @@
 
 import { Suspense, useEffect, useRef, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
+import { Html, OrbitControls } from '@react-three/drei';
 import UserInfo from "../world/UserInfo";
 import EarthModel from './EarthModel';
 import OzoneLayer from './OzoneLayer';
@@ -19,30 +19,41 @@ import './GreenHouse.css';
 import Cubemap from './Cubemap';
 import ZoomButton3D from './ZoomButton3D'; // Asegúrate de que el archivo esté en el lugar correcto
 import InfoButton3D from './InfoButton3D'; // Asegúrate de que el archivo esté en el lugar correcto
+import Stars from './Stars';
 
 const GreenHouse = () => {
-  const [zoomedIn, setZoomedIn] = useState(false);
+  const [zoomedIn, setZoomedIn] = useState(false); // Inicia con zoom hecho
+  const [showText, setShowText] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const cameraRef = useRef();
-  const groupRef = useRef();
-  const [groupPosition, setGroupPosition] = useState([0, 0, 0]); // Posición inicial del grupo
+  const groupRef = useRef(); // Referencia para el grupo de toda la escena
+  const [groupPosition, setGroupPosition] = useState([0, 0, 0]); // Posición del grupo
 
-  // Alternar el estado de zoom
+  /**
+   * Alternar el estado de zoom y mostrar el texto al alejar.
+   */
   const toggleZoom = () => {
-    setZoomedIn((prev) => !prev);
+    if (zoomedIn) {
+      setShowText(true); // Mostrar al alejar
+    } else {
+      setShowText(false); // Ocultar al acercar
+    }
+    setZoomedIn(!zoomedIn);
   };
 
-  // Ajustar la posición y escala de la escena al hacer zoom
+  // Ajustar la posición y la escala de la escena al hacer zoom
   useEffect(() => {
     if (cameraRef.current && groupRef.current) {
-      groupRef.current.position.set(
-        zoomedIn ? -0.70 : 0,
-        zoomedIn ? -0.30 : 0,
-        zoomedIn ? 0 : 0
-      );
-      groupRef.current.scale.set(zoomedIn ? 1.5 : 1, zoomedIn ? 1.5 : 1, zoomedIn ? 1.5 : 1);
-
-      cameraRef.current.fov = zoomedIn ? 30 : 45;
+      if (zoomedIn) {
+        groupRef.current.position.set(-0.7, -0.3, 0);
+        groupRef.current.scale.set(1.5, 1.5, 1.5);
+        cameraRef.current.fov = 30;
+      } else {
+        groupRef.current.position.set(-2, -0.5, 0); // Desplazar escena a la izquierda
+        groupRef.current.scale.set(1, 1, 1); // Escala normal
+        cameraRef.current.position.set(2, 1, 4); // Mover cámara a la derecha
+        cameraRef.current.fov = 45;
+      }
       cameraRef.current.updateProjectionMatrix();
     }
   }, [zoomedIn]);
@@ -87,12 +98,11 @@ const GreenHouse = () => {
   return (
     <div className="greenhouse-container">
       <UserInfo />
-      <Canvas
-        shadows
-        camera={{ position: [0, 1, 2], fov: 45 }}
+      <Canvas shadows camera={{ position: [0, 1, 2], fov: 45 }}
         onCreated={({ camera }) => (cameraRef.current = camera)}
       >
         <Suspense fallback={null}>
+          <Stars />
           <group ref={groupRef} position={groupPosition}>
             <Cubemap images={cubemapImages} />
             <ambientLight intensity={0.1} />
@@ -112,6 +122,18 @@ const GreenHouse = () => {
             <EarthModel />
             <OzoneLayer />
             <Moon />
+
+            {/* Mostrar el texto al estilo Star Wars una sola vez */}
+            {showText && (
+              <Html position={[2, 0, -5]} distanceFactor={8} transform>
+                <div className="scrolling-text" onAnimationEnd={() => setShowText(false)}>
+                  <p>
+                    El efecto invernadero es una trampa de calor que está alterando nuestro planeta.
+                    Debemos tomar medidas ahora para proteger el futuro.
+                  </p>
+                </div>
+              </Html>
+            )}
           </group>
         </Suspense>
 
