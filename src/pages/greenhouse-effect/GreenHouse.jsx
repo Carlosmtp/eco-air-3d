@@ -4,7 +4,7 @@
  * It includes Earth, an ozone layer, the Moon, and a cubemap background, with controls for zooming and info modal.
  * @returns {JSX.Element} A fully interactive 3D greenhouse simulation.
  * @date Created: 27/10/2024
- * @updated: 12/11/2024 - Added functionality to move the entire scene with a zoom button
+ * @updated: 14/11/2024 - Added functionality to move the entire scene with a zoom button
  * @autor Andres Mauricio Ortiz
  */
 
@@ -17,31 +17,30 @@ import OzoneLayer from './OzoneLayer';
 import Moon from './Moon';
 import './GreenHouse.css';
 import Cubemap from './Cubemap';
-import ZoomButton3D from './ZoomButton3D'; // Asegúrate de que el archivo esté en el lugar correcto
-import InfoButton3D from './InfoButton3D'; // Asegúrate de que el archivo esté en el lugar correcto
+import ZoomButton3D from './ZoomButton3D';
+import InfoButton3D from './InfoButton3D';
 import Stars from './Stars';
 
 const GreenHouse = () => {
-  const [zoomedIn, setZoomedIn] = useState(false); // Inicia con zoom hecho
+  const [zoomedIn, setZoomedIn] = useState(false);
   const [showText, setShowText] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const cameraRef = useRef();
-  const groupRef = useRef(); // Referencia para el grupo de toda la escena
-  const [groupPosition, setGroupPosition] = useState([0, 0, 0]); // Posición del grupo
+  const groupRef = useRef();
+  const [groupPosition, setGroupPosition] = useState([0, 0, 0]);
+  const [buttonPosition, setButtonPosition] = useState([0, 0.7, 0]);
 
-  /**
-   * Alternar el estado de zoom y mostrar el texto al alejar.
-   */
   const toggleZoom = () => {
     if (zoomedIn) {
-      setShowText(true); // Mostrar al alejar
+      setShowText(true);
+      setButtonPosition([0, 0.7, 0]); // Volver a la posición original al alejar
     } else {
-      setShowText(false); // Ocultar al acercar
+      setShowText(false);
+      setButtonPosition([0.9, 0, 0]); // Nueva posición al acercar
     }
     setZoomedIn(!zoomedIn);
   };
 
-  // Ajustar la posición y la escala de la escena al hacer zoom
   useEffect(() => {
     if (cameraRef.current && groupRef.current) {
       if (zoomedIn) {
@@ -49,42 +48,14 @@ const GreenHouse = () => {
         groupRef.current.scale.set(1.5, 1.5, 1.5);
         cameraRef.current.fov = 30;
       } else {
-        groupRef.current.position.set(-2, -0.5, 0); // Desplazar escena a la izquierda
-        groupRef.current.scale.set(1, 1, 1); // Escala normal
-        cameraRef.current.position.set(2, 1, 4); // Mover cámara a la derecha
+        groupRef.current.position.set(-2, -0.5, 0);
+        groupRef.current.scale.set(1, 1, 1);
+        cameraRef.current.position.set(2, 1, 4);
         cameraRef.current.fov = 45;
       }
       cameraRef.current.updateProjectionMatrix();
     }
   }, [zoomedIn]);
-
-  // Detectar eventos de teclado (flechas)
-  const handleKeyDown = (event) => {
-    let [x, y, z] = groupPosition;
-
-    if (event.key === 'ArrowUp') {
-      z -= 0.1; // Mover hacia adelante
-    }
-    if (event.key === 'ArrowDown') {
-      z += 0.1; // Mover hacia atrás
-    }
-    if (event.key === 'ArrowLeft') {
-      x -= 0.1; // Mover hacia la izquierda
-    }
-    if (event.key === 'ArrowRight') {
-      x += 0.1; // Mover hacia la derecha
-    }
-
-    setGroupPosition([x, y, z]);
-  };
-
-  // Añadir y limpiar el listener para las teclas
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [groupPosition]);
 
   const cubemapImages = [
     '/cubemapSpace/right.png',
@@ -98,68 +69,55 @@ const GreenHouse = () => {
   return (
     <div className="greenhouse-container">
       <UserInfo />
-      <Canvas shadows camera={{ position: [0, 1, 2], fov: 45 }}
-        onCreated={({ camera }) => (cameraRef.current = camera)}
-      >
+      <Canvas shadows camera={{ position: [0, 0, 2], fov: 50 }} onCreated={({ camera }) => (cameraRef.current = camera)}>
         <Suspense fallback={null}>
           <Stars />
           <group ref={groupRef} position={groupPosition}>
             <Cubemap images={cubemapImages} />
             <ambientLight intensity={0.1} />
-            <directionalLight
-              position={[5, 0, 5]}
-              intensity={1.5}
-              castShadow
-              shadow-mapSize-width={2048}
-              shadow-mapSize-height={2048}
-              shadow-camera-far={50}
-              shadow-camera-left={-10}
-              shadow-camera-right={10}
-              shadow-camera-top={10}
-              shadow-camera-bottom={-10}
-            />
+            <directionalLight position={[5, 0, 5]} intensity={1.5} castShadow />
             <pointLight position={[-10, 10, -10]} intensity={0.5} />
             <EarthModel />
             <OzoneLayer />
             <Moon />
 
-            {/* Mostrar el texto al estilo Star Wars una sola vez */}
             {showText && (
               <Html position={[2, 0, -5]} distanceFactor={8} transform>
-                <div className="scrolling-text" onAnimationEnd={() => setShowText(false)}>
+                <div className="scrolling-text">
                   <p>
-                    El efecto invernadero es una trampa de calor que está alterando nuestro planeta.
-                    Debemos tomar medidas ahora para proteger el futuro.
+                    El efecto invernadero, aunque esencial para la vida en la Tierra, está siendo intensificado por actividades humanas. Esto está causando un desequilibrio en el clima global.
+                    Es urgente actuar para mitigar sus impactos y preservar nuestro futuro.
                   </p>
                 </div>
               </Html>
             )}
+
+            <ZoomButton3D
+              zoomedIn={zoomedIn}
+              toggleZoom={toggleZoom}
+              buttonPosition={buttonPosition}
+            />
+
+            <InfoButton3D
+              modelUrl="/models/greenhouse/infoModel.glb"
+              onClick={() => setShowModal(true)}
+              description="Más Información"
+            />
           </group>
         </Suspense>
-
         <OrbitControls />
-
-        {/* Botones 3D de Zoom e Información */}
-        <ZoomButton3D zoomedIn={zoomedIn} toggleZoom={toggleZoom} />
-
-        {/* InfoButton3D con el modelo GLTF */}
-        <InfoButton3D
-          modelUrl="/models/greenhouse/infoModel.glb" // Ruta del modelo GLTF
-          onClick={() => setShowModal(true)}
-          description="Más Información"
-        />
       </Canvas>
 
-      {/* Modal de Información */}
       {showModal && (
         <div className="modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h2>Comprendiendo el Efecto Invernadero</h2>
-            <p>
-              El efecto invernadero es fundamental para mantener la temperatura de nuestro planeta.
-              Sin embargo, las actividades humanas han intensificado este proceso, atrapando más calor en la atmósfera y contribuyendo al cambio climático.
-            </p>
-            <button className="close-button" onClick={() => setShowModal(false)}>&times;</button>
+          <div className="modal-content">
+            <h2>Impacto del Efecto Invernadero en el Cambio Climático</h2>
+              <p>
+                El efecto invernadero es un proceso natural que mantiene la temperatura de la Tierra en un rango habitable. Sin embargo, las actividades humanas, como la quema de combustibles fósiles y la deforestación, están aumentando la concentración de gases de efecto invernadero como el dióxido de carbono.
+                Este cambio está alterando el equilibrio climático, generando fenómenos extremos como olas de calor, tormentas más intensas y el derretimiento de los polos. Si no tomamos medidas ahora, las generaciones futuras enfrentarán un planeta mucho más cálido e inhabitable.
+              </p>
+
+            <button onClick={() => setShowModal(false)}>&times;</button>
           </div>
         </div>
       )}

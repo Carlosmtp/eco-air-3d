@@ -4,7 +4,7 @@
  * @param {Function} toggleModal - Function to toggle the visibility of the info modal.
  * @returns {JSX.Element} A button labeled "Más Información" to open or close the modal.
   @date Created: 31/10/2024
- * @updated: 12/11/2024
+ * @updated: 14/11/2024
  * @author Andres Mauricio Ortiz
  *         ortiz.andres@correounivalle.edu.co
  */
@@ -29,7 +29,7 @@
       <>
         <mesh
           ref={buttonRef}
-          position={[0, 1, -5]} // Ubicación del modelo 3D
+          position={[-1.2, 0.2, 0]} // Ubicación del modelo 3D
           onClick={handleClick}
           onPointerOver={handlePointerOver}
           onPointerOut={handlePointerOut}
@@ -37,11 +37,11 @@
           receiveShadow
         >
           {/* Usamos el modelo GLTF cargado */}
-          <primitive object={scene} scale={[0.5, 0.5, 0.5]} />
+          <primitive object={scene} scale={[0.3, 0.3, 0.3]} />
         </mesh>
 
         {/* Texto debajo del modelo GLTF */}
-        <Html position={[0, 0.5, -5]} center>
+        <Html position={[-1.2, 0, 0]} center>
           <div style={{
             color: 'white',
             fontSize: '20px',
