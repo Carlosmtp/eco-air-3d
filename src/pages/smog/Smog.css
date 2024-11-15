@@ -20,3 +20,39 @@
     top: 15%;
     text-align: left;
   }
+
+  /* Smog.css */
+
+/* Contenedor para mantener los elementos HTML fuera del modelo 3D */
+.fixed-overlay-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;  /* Asegúrate de que este contenedor quede por encima del canvas */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.html-overlay {
+  position: absolute;
+  top: 10%;
+  text-align: center;
+  z-index: 20; /* Asegura que se muestre por encima de otros elementos */
+}
+
+.html-overlay a {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 16px;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.html-overlay a:hover {
+  text-decoration: underline;
+}
