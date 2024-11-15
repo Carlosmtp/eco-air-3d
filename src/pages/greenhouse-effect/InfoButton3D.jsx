@@ -1,5 +1,5 @@
 /**
- * @file InfoButton.jsx
+ * @file InfoButton3D.jsx
  * @description InfoButton component that renders a button to toggle the visibility of an information modal.
  * @param {Function} toggleModal - Function to toggle the visibility of the info modal.
  * @returns {JSX.Element} A button labeled "Más Información" to open or close the modal.

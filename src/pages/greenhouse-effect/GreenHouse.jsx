@@ -1,11 +1,12 @@
 /**
  * @file GreenHouse.jsx
- * GreenHouse component renders an interactive 3D scene that simulates the Greenhouse Effect.
- * It includes Earth, an ozone layer, the Moon, and a cubemap background, with controls for zooming and info modal.
- * @returns {JSX.Element} A fully interactive 3D greenhouse simulation.
- * @date Created: 27/10/2024
- * @updated: 14/11/2024 - Added functionality to move the entire scene with a zoom button
- * @autor Andres Mauricio Ortiz
+* GreenHouse component renders an interactive 3D scene that simulates the Greenhouse Effect.
+* It includes Earth, an ozone layer, the Moon, and a cubemap background, with controls for zooming and info modal.
+* @returns {JSX.Element} A fully interactive 3D greenhouse simulation.
+* @date Created: 27/10/2024
+ * @updated: 31/10/2024
+ * @author Andres Mauricio Ortiz
+ *         ortiz.andres@correounivalle.edu.co
  */
 
 import { Suspense, useEffect, useRef, useState } from 'react';

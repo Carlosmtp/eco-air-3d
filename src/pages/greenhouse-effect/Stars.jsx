@@ -1,5 +1,5 @@
 /**
- * @file OzoneLayer.jsx
+ * @file Stars.jsx
  * @description  * OzoneLayer component that renders a semi-transparent 3D sphere representing the Earth's ozone layer.
  * @returns {JSX.Element} A 3D sphere mesh with a translucent material simulating the ozone layer.
  * @date Created: 5/11/2024

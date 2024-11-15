@@ -1,9 +1,11 @@
 /**
- * @file InfoButton.jsx
- * @description InfoButton component that renders a button to toggle the visibility of an information modal.
- * @param {Function} toggleModal - Function to toggle the visibility of the info modal.
- * @returns {JSX.Element} A button labeled "Más Información" to open or close the modal.
-  @date Created: 1/11/2024
+ * @file GreenHouse.jsx
+ * ZoomButton component that renders a button to toggle zoom in/out on a 3D scene.
+ * @param {boolean} zoomedIn - Boolean indicating the current zoom state; true if zoomed in.
+ * @param {Function} toggleZoom - Function to toggle the zoom state.
+ * @returns {JSX.Element} A button labeled "Acercar" or "Alejar" based on zoom state.
+ * @returns {JSX.Element} A fully interactive 3D greenhouse simulation.
+* @date Created: 31/10/2024
  * @updated: 14/11/2024
  * @author Andres Mauricio Ortiz
  *         ortiz.andres@correounivalle.edu.co
