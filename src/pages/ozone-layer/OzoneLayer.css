@@ -1,22 +1,21 @@
 .ozone-canvas {
   background-color: black;
   left: 0;
-  padding-top: 50px;
-  padding-bottom: 50px;
   top: 0;
   position: absolute;
   display: flex;
-  justify-content: flex-start; /* Alinea los elementos al inicio del eje principal */
-  align-items: flex-start; /* Alinea los elementos al inicio del eje transversal */
+  justify-content: flex-start;
+  align-items: flex-start;
   width: 100%;
-  height: 100%;
+  margin-top: 80px;
+  height: 100vh;
 }
 
 .intro-card {
-  background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco semi-transparente */
+  background-color: rgba(255, 255, 255, 0.8);
   color: black;
-  border-radius: 10px; /* Bordes redondeados */
-  padding: 10px; /* Espaciado interno */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
-  top: 30%; /* Alinea con el canvas */
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  top: 30%;
 }

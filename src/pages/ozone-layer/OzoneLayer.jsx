@@ -3,7 +3,7 @@
  * @file OzoneLayer.jsx
  * @description This component renders a 3D scene of the Ozone Layer, including a representation of the Earth, ambient light, directional light, visual indicators for UV radiation, and an introductory card with information about the Ozone Layer.
  * @date Created: 31/10/2024
- * @date Last Modified: 08/11/2024
+ * @date Last Modified: 14/11/2024
  * @author Carlos Mauricio Tovar Parra
  *         carlos.mauricio.tovar@correounivalle.edu.co
  */
@@ -64,7 +64,7 @@ const Scene = () => {
       setMouse({ x, y });
 
       const distance = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-      setOpacity(Math.max(0.3, 1 - distance / 1.5));
+      setOpacity(Math.max(0.2, 1 - distance / 1.5));
     };
 
     window.addEventListener("mousemove", handleMouseMove);
@@ -77,7 +77,7 @@ const Scene = () => {
   const handleClick = (uvType) => {
     switch (uvType) {
       case "UVB":
-        window.open("/uvb.html", "_blank");
+        setOpacity(0.5);
         break;
       case "UVA":
         window.open("/uva.html", "_blank");
@@ -145,7 +145,7 @@ const Scene = () => {
       />
 
       {/* Texto con animación flotante */}
-      <Float size={0.5} position={[5, 3, 2]} factor={1}>
+      <Float size={0.5} position={[5, 3, 2]} factor={7} speed={7}>
         <Text
           color="white"
           fontSize={0.5}
@@ -157,6 +157,7 @@ const Scene = () => {
           anchorY="middle"
           outlineWidth={0.05}
           outlineColor="blue"
+          
         >
           La Capa de Ozono
         </Text>
