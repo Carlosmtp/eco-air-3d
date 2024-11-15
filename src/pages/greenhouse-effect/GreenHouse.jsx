@@ -11,39 +11,50 @@
 
 import { Suspense, useEffect, useRef, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
+import { Html, OrbitControls } from '@react-three/drei';
 import UserInfo from "../world/UserInfo";
 import EarthModel from './EarthModel';
 import OzoneLayer from './OzoneLayer';
 import Moon from './Moon';
 import './GreenHouse.css';
 import Cubemap from './Cubemap';
-import ZoomButton from './ZoomButton';
-import InfoButton from './InfoButton';
-
+import ZoomButton3D from './ZoomButton3D';
+import InfoButton3D from './InfoButton3D';
+import Stars from './Stars';
 
 const GreenHouse = () => {
-  const [zoomedIn, setZoomedIn] = useState(false); // State to manage zoom level
-  const [showModal, setShowModal] = useState(false); // State to control info modal visibility
-  const cameraRef = useRef(); // Reference to camera object for zoom manipulation
+  const [zoomedIn, setZoomedIn] = useState(false);
+  const [showText, setShowText] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const cameraRef = useRef();
+  const groupRef = useRef();
+  const [groupPosition, setGroupPosition] = useState([0, 0, 0]);
+  const [buttonPosition, setButtonPosition] = useState([0, 0.7, 0]);
 
-  /**
-   * Toggles zoom state between zoomed-in and zoomed-out positions.
-   */
   const toggleZoom = () => {
-    setZoomedIn((prev) => !prev);
-  };
-
-  /**
-   * Toggles the modal's visibility for displaying additional information.
-   */
-  const toggleModal = () => {
-    setShowModal((prev) => !prev);
+    if (zoomedIn) {
+      setShowText(true);
+      setButtonPosition([0, 0.7, 0]); // Volver a la posición original al alejar
+    } else {
+      setShowText(false);
+      setButtonPosition([0.9, 0, 0]); // Nueva posición al acercar
+    }
+    setZoomedIn(!zoomedIn);
   };
 
   useEffect(() => {
-    if (cameraRef.current) {
-      cameraRef.current.position.set(0, 1, zoomedIn ? 4 : 2); // Adjusts camera position based on zoom state
+    if (cameraRef.current && groupRef.current) {
+      if (zoomedIn) {
+        groupRef.current.position.set(-0.7, -0.3, 0);
+        groupRef.current.scale.set(1.5, 1.5, 1.5);
+        cameraRef.current.fov = 30;
+      } else {
+        groupRef.current.position.set(-2, -0.5, 0);
+        groupRef.current.scale.set(1, 1, 1);
+        cameraRef.current.position.set(2, 1, 4);
+        cameraRef.current.fov = 45;
+      }
+      cameraRef.current.updateProjectionMatrix();
     }
   }, [zoomedIn]);
 
@@ -59,51 +70,55 @@ const GreenHouse = () => {
   return (
     <div className="greenhouse-container">
       <UserInfo />
-      <Canvas
-        shadows
-        camera={{ position: [0, 1, 2], fov: 45 }}
-        onCreated={({ camera }) => (cameraRef.current = camera)}
-      >
+      <Canvas shadows camera={{ position: [0, 0, 2], fov: 50 }} onCreated={({ camera }) => (cameraRef.current = camera)}>
         <Suspense fallback={null}>
-          <Cubemap images={cubemapImages} />
-          <ambientLight intensity={0.1} />
-          <directionalLight
-            position={[5, 0, 5]}
-            intensity={1.5}
-            castShadow
-            shadow-mapSize-width={2048}
-            shadow-mapSize-height={2048}
-            shadow-camera-far={50}
-            shadow-camera-left={-10}
-            shadow-camera-right={10}
-            shadow-camera-top={10}
-            shadow-camera-bottom={-10}
-          />
-          <pointLight position={[-10, 10, -10]} intensity={0.5} />
-          <EarthModel />
-          <OzoneLayer />
-          <Moon />
+          <Stars />
+          <group ref={groupRef} position={groupPosition}>
+            <Cubemap images={cubemapImages} />
+            <ambientLight intensity={0.1} />
+            <directionalLight position={[5, 0, 5]} intensity={1.5} castShadow />
+            <pointLight position={[-10, 10, -10]} intensity={0.5} />
+            <EarthModel />
+            <OzoneLayer />
+            <Moon />
+
+            {showText && (
+              <Html position={[2, 0, -5]} distanceFactor={8} transform>
+                <div className="scrolling-text">
+                  <p>
+                    El efecto invernadero, aunque esencial para la vida en la Tierra, está siendo intensificado por actividades humanas. Esto está causando un desequilibrio en el clima global.
+                    Es urgente actuar para mitigar sus impactos y preservar nuestro futuro.
+                  </p>
+                </div>
+              </Html>
+            )}
+
+            <ZoomButton3D
+              zoomedIn={zoomedIn}
+              toggleZoom={toggleZoom}
+              buttonPosition={buttonPosition}
+            />
+
+            <InfoButton3D
+              modelUrl="/models/greenhouse/infoModel.glb"
+              onClick={() => setShowModal(true)}
+              description="Más Información"
+            />
+          </group>
         </Suspense>
         <OrbitControls />
       </Canvas>
 
-      {/* Zoom and Info buttons */}
-      <ZoomButton zoomedIn={zoomedIn} toggleZoom={toggleZoom} />
-      <InfoButton toggleModal={toggleModal} />
-
-      {/* Info modal */}
       {showModal && (
-        <div className="modal-overlay" onClick={toggleModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h2>Comprendiendo el Efecto Invernadero</h2>
-            <p>
-              El efecto invernadero es fundamental para mantener la temperatura de nuestro planeta.
-              Sin embargo, las actividades humanas han intensificado este proceso, atrapando más calor en la
-              atmósfera y contribuyendo al cambio climático. Este fenómeno provoca un aumento de las temperaturas,
-              alteraciones en los ecosistemas y fenómenos meteorológicos extremos, afectando a todas las
-              formas de vida en la Tierra.
-            </p>
-            <button className="close-button" onClick={toggleModal}>&times;</button>
+        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="modal-content">
+            <h2>Impacto del Efecto Invernadero en el Cambio Climático</h2>
+              <p>
+                El efecto invernadero es un proceso natural que mantiene la temperatura de la Tierra en un rango habitable. Sin embargo, las actividades humanas, como la quema de combustibles fósiles y la deforestación, están aumentando la concentración de gases de efecto invernadero como el dióxido de carbono.
+                Este cambio está alterando el equilibrio climático, generando fenómenos extremos como olas de calor, tormentas más intensas y el derretimiento de los polos. Si no tomamos medidas ahora, las generaciones futuras enfrentarán un planeta mucho más cálido e inhabitable.
+              </p>
+
+            <button onClick={() => setShowModal(false)}>&times;</button>
           </div>
         </div>
       )}
