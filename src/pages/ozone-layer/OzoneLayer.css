@@ -11,11 +11,75 @@
   height: 100vh;
 }
 
-.intro-card {
-  background-color: rgba(255, 255, 255, 0.8);
-  color: black;
+.ray-card {
+  font-size: smaller;
+  padding: 20px;
+  background-color: #ffffff;
   border-radius: 10px;
+  max-width: 800px;
+  margin: auto;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Sombra para hacer la tarjeta más destacada */
+  background: rgba(255, 255, 255, 0.85); /* Fondo blanco semitransparente */
+  backdrop-filter: blur(5px); /* Efecto de difuminado para el fondo */
+  overflow-y: auto;
+}
+
+.ray-card:hover {
+  background-color: #f0f0f0;
+  border: #005f73 solid 1px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+}
+.intro-card {
+  font-size: smaller;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  height: 800px;
+  margin: auto;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Sombra para hacer la tarjeta más destacada */
+  background: rgba(255, 255, 255, 0.85); /* Fondo blanco semitransparente */
+  backdrop-filter: blur(5px); /* Efecto de difuminado para el fondo */
+  overflow-y: auto;
+}
+
+.navigation {
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  background-color: #00aaff; /* Color de fondo para los botones */
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.navigation button {
   padding: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  top: 30%;
+  border: none;
+  background-color: #00aaff;
+  color: white;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.navigation button:hover {
+  background-color: #0088cc;
+  transform: scale(1.05); /* Efecto de aumento al pasar el cursor */
+}
+
+.section-content {
+  font-size: 1.2em;
+  line-height: 1.6;
+  color: #333333; /* Color de texto más oscuro para mejor legibilidad */
+  margin-top: 10px;
+}
+
+.section-content p {
+  margin-bottom: 15px; /* Espaciado entre párrafos */
+}
+
+h2 {
+  color: #005f73; /* Color de título contrastante */
+  margin-bottom: 20px;
 }
