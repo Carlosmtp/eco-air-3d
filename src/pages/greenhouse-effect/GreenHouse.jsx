@@ -23,14 +23,15 @@ import InfoButton3D from './InfoButton3D';
 import Stars from './Stars';
 
 const GreenHouse = () => {
-  const [zoomedIn, setZoomedIn] = useState(false);
+  const [zoomedIn, setZoomedIn] = useState(false); // Inicia con zoom hecho
   const [showText, setShowText] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const cameraRef = useRef();
   const groupRef = useRef();
-  const [groupPosition, setGroupPosition] = useState([0, 0, 0]);
+  const [groupPosition, setGroupPosition] = useState([0, 0, 0]); // Posición del grupo
   const [buttonPosition, setButtonPosition] = useState([0, 0.7, 0]);
 
+  // Función para alternar zoom
   const toggleZoom = () => {
     if (zoomedIn) {
       setShowText(true);
@@ -42,6 +43,7 @@ const GreenHouse = () => {
     setZoomedIn(!zoomedIn);
   };
 
+  // Ajustar la posición y escala al hacer zoom
   useEffect(() => {
     if (cameraRef.current && groupRef.current) {
       if (zoomedIn) {
@@ -57,6 +59,34 @@ const GreenHouse = () => {
       cameraRef.current.updateProjectionMatrix();
     }
   }, [zoomedIn]);
+
+  // Eventos de teclado para mover la escena
+  const handleKeyDown = (event) => {
+    let [x, y, z] = groupPosition;
+
+    if (event.key === 'ArrowUp') {
+      z -= 0.1; // Mover hacia adelante
+    }
+    if (event.key === 'ArrowDown') {
+      z += 0.1; // Mover hacia atrás
+    }
+    if (event.key === 'ArrowLeft') {
+      x -= 0.1; // Mover hacia la izquierda
+    }
+    if (event.key === 'ArrowRight') {
+      x += 0.1; // Mover hacia la derecha
+    }
+
+    setGroupPosition([x, y, z]);
+  };
+
+  // Añadir y limpiar el listener para las teclas
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [groupPosition]);
 
   const cubemapImages = [
     '/cubemapSpace/right.png',
