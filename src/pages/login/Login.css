@@ -11,9 +11,11 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: none
 }
 
 body {
+  overflow: hidden;
   background: linear-gradient(135deg, 
     #7cc9a1 0%, 
     #6bc89d 10%, 
@@ -24,6 +26,7 @@ body {
     #288070 90%, 
     #1d7264 100%
   );
+  
   width: 100%;
   height: 100vh;
   display: flex;

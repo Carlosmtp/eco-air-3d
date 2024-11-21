@@ -74,15 +74,56 @@ body {
   text-align: center;
 }
 
-
 .canvas-container:hover {
   cursor: pointer;
   box-shadow: #1758ca 2px 2px 5px;
   text-shadow: #0d47a1 2px 2px;
 }
 
+.icono-entrar {
+  position: absolute;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #3498db;
+  color: white;
+  font-size: 30px;
+  border: 2px solid #2980b9;
+  transition: background-color 0.3s, transform 0.3s;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.cloud-text {
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  width: 500px;
+  color: black;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  z-index: 10;
+}
+
+.icono-entrar:hover {
+  background-color: #2980b9;
+  transform: scale(1.1);
+}
+
+.icono-entrar i {
+  pointer-events: none;
+}
+
 .info-card {
-  position: fixed;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  width: 300px;
   color: black;
   top: 50%;
   left: 50%;
@@ -97,6 +138,7 @@ body {
 
 .info-card h2 {
   margin: 0 0 10px;
+  text-align: center;
 }
 
 .info-card p {
@@ -114,4 +156,74 @@ body {
 
 .info-card button:hover {
   background-color: #0056b3;
+}
+
+.scroll-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  animation: fade-in 2s ease-in-out infinite;
+}
+
+.mouse-scroll {
+  width: 24px;
+  height: 40px;
+  border: 2px solid #000;
+  border-radius: 12px;
+  position: relative;
+  animation: bounce 1s ease-in-out infinite alternate;
+}
+
+.mouse-scroll::after {
+  content: '';
+  display: block;
+  width: 4px;
+  height: 8px;
+  background-color: #000;
+  border-radius: 2px;
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: scroll 1s ease-in-out infinite;
+}
+
+.arrow {
+  width: 12px;
+  height: 12px;
+  border-bottom: 2px solid #000;
+  border-right: 2px solid #000;
+  transform: rotate(45deg);
+  animation: arrow-bounce 1s ease-in-out infinite;
+}
+
+.scroll-text {
+  font-size: 14px;
+  color: #333;
+  font-family: Arial, sans-serif;
+  animation: fade-in 2s ease-in-out infinite;
+}
+
+@keyframes scroll {
+  0% { background-color: #000; }
+  25% { background-color: #666; }
+  50% { background-color: #ccc; }
+  75% { background-color: #666; }
+  100% { background-color: #000; }
+}
+
+@keyframes fade-in {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes bounce {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(4px); }
+}
+
+@keyframes arrow-bounce {
+  0% { transform: translateY(0) rotate(45deg); }
+  100% { transform: translateY(4px) rotate(45deg); }
 }

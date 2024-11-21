@@ -33,7 +33,7 @@ const UserInfo = () => {
     return <p>Loading user information...</p>;
   }
 
-  console.log("User data:", user); // Debug: Verificar si user contiene datos
+  console.log("User data:", user);
 
   return (
     <>
@@ -52,7 +52,7 @@ const UserInfo = () => {
       </div>
 
       <div className="buttons-container">
-        <button className="top-button" onClick={() => navigate("/world")}>
+        <button className="top-button" onClick={() => navigate("/welcome", { state: { scrollPosition: 140 } })}>
           Home
         </button>
         <button className="top-button" onClick={() => alert("Top 10 feature is currently under development.")}>

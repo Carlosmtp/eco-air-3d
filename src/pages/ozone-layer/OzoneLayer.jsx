@@ -1,12 +1,4 @@
 /* eslint-disable react/no-unknown-property */
-/**
- * @file OzoneLayer.jsx
- * @description This component renders a 3D scene of the Ozone Layer, including a representation of the Earth, ambient light, directional light, visual indicators for UV radiation, and an introductory card with information about the Ozone Layer.
- * @date Created: 31/10/2024
- * @date Last Modified: 08/11/2024
- * @author Carlos Mauricio Tovar Parra
- *         carlos.mauricio.tovar@correounivalle.edu.co
- */
 import { Canvas } from "@react-three/fiber";
 import {
   Line,
@@ -22,7 +14,52 @@ import Earth from "../login/Earth";
 import Clouds from "../login/Clouds";
 import "./OzoneLayer.css";
 import { useMemo, useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import * as THREE from "three";
+import IntroCard from "./IntroCard";
+
+// Componente RaysInfo
+const RaysInfo = ({ uvType, onClose }) => {
+  let content = '';
+
+  // Contenido para cada tipo de UV
+  switch (uvType) {
+    case 'UVB':
+      content = 'UVB (Ultravioleta B) es responsable de quemaduras solares y daño a la piel.';
+      break;
+    case 'UVA':
+      content = 'UVA (Ultravioleta A) penetra más profundamente en la piel y es responsable de envejecimiento prematuro.';
+      break;
+    case 'UVC':
+      content = 'UVC (Ultravioleta C) es la forma más peligrosa, pero afortunadamente es absorbida por la capa de ozono.';
+      break;
+    default:
+      content = 'Información no disponible.';
+  }
+
+  return (
+    uvType && (
+      <div style={{
+        backgroundColor: 'white', padding: '10px', borderRadius: '10px', boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.2)',
+        fontSize: '14px', width: '300px', color: 'black'
+      }}>
+        <h3>{uvType} - Información</h3>
+        <p>{content}</p>
+        <button onClick={onClose} style={{
+          backgroundColor: 'red', color: 'white', padding: '5px 10px', border: 'none', borderRadius: '5px'
+        }}>
+          Cerrar
+        </button>
+      </div>
+    )
+  );
+};
+
+RaysInfo.propTypes = {
+  uvType: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired,
+};
+
 
 const Scene = () => {
   const MATERIAL_PATH = useMemo(
@@ -35,6 +72,10 @@ const Scene = () => {
     `${MATERIAL_PATH}rough_1k.jpg`,
     `${MATERIAL_PATH}ao_1k.jpg`,
   ]);
+  const handleClick = (uvType) => {
+    console.log('infoType actualizado a: ', uvType);
+    setInfoType(uvType);
+  };
 
   const repeatCount = 15;
   colorMap.wrapS =
@@ -52,9 +93,11 @@ const Scene = () => {
   roughnessMap.repeat.set(repeatCount, repeatCount);
   aoMap.repeat.set(repeatCount, repeatCount);
 
-  // Estado del mouse
+  // Estado del mouse y del teclado
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const [opacity, setOpacity] = useState(0.5);
+  const [rotate, setRotate] = useState(false); // Control de rotación
+  const [infoType, setInfoType] = useState(null);
 
   // Actualizar posición del mouse y opacidad
   useEffect(() => {
@@ -64,7 +107,7 @@ const Scene = () => {
       setMouse({ x, y });
 
       const distance = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-      setOpacity(Math.max(0.3, 1 - distance / 1.5));
+      setOpacity(Math.max(0.2, 1 - distance / 1.5));
     };
 
     window.addEventListener("mousemove", handleMouseMove);
@@ -73,22 +116,27 @@ const Scene = () => {
     };
   }, []);
 
-  // Función para manejar clics en textos de UV
-  const handleClick = (uvType) => {
-    switch (uvType) {
-      case "UVB":
-        window.open("/uvb.html", "_blank");
-        break;
-      case "UVA":
-        window.open("/uva.html", "_blank");
-        break;
-      case "UVC":
-        window.open("/uvc.html", "_blank");
-        break;
-      default:
-        break;
+
+
+  // Función para manejar la interactividad del teclado
+  const handleKeyDown = (event) => {
+    if (event.key === "r" || event.key === "R") {
+      setRotate((prevState) => !prevState); // Alterna la rotación al presionar 'r'
+    }
+    if (event.key === "ArrowUp") {
+      setOpacity((prevOpacity) => Math.min(1, prevOpacity + 0.1)); // Aumenta la opacidad
+    }
+    if (event.key === "ArrowDown") {
+      setOpacity((prevOpacity) => Math.max(0.1, prevOpacity - 0.1)); // Disminuye la opacidad
     }
   };
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   return (
     <>
@@ -145,7 +193,7 @@ const Scene = () => {
       />
 
       {/* Texto con animación flotante */}
-      <Float size={0.5} position={[5, 3, 2]} factor={1}>
+      <Float size={0.5} position={[5, 3, 3]} factor={7} speed={7}>
         <Text
           color="white"
           fontSize={0.5}
@@ -163,7 +211,7 @@ const Scene = () => {
       </Float>
 
       {/* Esfera que representa la capa de ozono */}
-      <mesh castShadow position={[-5, 0, 0]}>
+      <mesh castShadow position={[-5, 0, 0]} rotation={rotate ? [0, 0.01, 0] : [0, 0, 0]}>
         <sphereGeometry args={[4, 200, 200]} />
         <meshStandardMaterial
           map={colorMap}
@@ -221,59 +269,57 @@ const Scene = () => {
       <Html
         position={[1.6, 5.4, 0]}
         center
-        onClick={() => handleClick("UVB")}
         style={{ cursor: "pointer" }}
       >
-        <div className="intro-card" style={{ color: "blue", fontSize: "16px" }}>
+        <div className="ray-card" style={{ color: "blue", fontSize: "16px" }} onClick={() => handleClick("UVB")}>
           UVB
         </div>
       </Html>
       <Html
         position={[-1.5, 3.5, 0]}
         center
-        onClick={() => handleClick("UVC")}
         style={{ cursor: "pointer" }}
       >
-        <div className="intro-card" style={{ color: "blue", fontSize: "16px" }}>
+        <div className="ray-card" style={{ color: "blue", fontSize: "16px" }} onClick={() => handleClick("UVC")}>
           UVC
         </div>
       </Html>
       <Html
         position={[0.5, 4, 0]}
         center
-        onClick={() => handleClick("UVA")}
+        
         style={{ cursor: "pointer" }}
       >
-        <div className="intro-card" style={{ color: "blue", fontSize: "16px" }}>UVA</div>
+        <div className="ray-card" style={{ color: "blue", fontSize: "16px" }} onClick={() => handleClick("UVA") }>UVA</div>
       </Html>
 
       {/* Panel HTML explicativo */}
       <Html
-        position={[6, 0, 0]}
+        position={[7, -1, 0]}
         transform
         distanceFactor={8}
         style={{
           width: "400px",
-          height: "200px",
-          background: "rgba(255, 255, 255, 0.8)",
+          height: "400px",
           borderRadius: "10px",
           boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
           padding: "20px",
           fontSize: "16px",
-          color: "#333",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
         }}
       >
-        <p>
-          La capa de ozono es esencial para la vida en la Tierra. Actúa como un
-          escudo que protege a nuestro planeta de la dañina radiación UV del
-          sol. Proteger nuestra capa de ozono es vital para prevenir efectos
-          adversos en la salud humana y el medio ambiente, como el aumento de
-          casos de cáncer de piel y daños a los ecosistemas.
-        </p>
+        <IntroCard />
+      </Html>
+      <Html
+      position={[-7, -1, 0]}
+      >
+        <RaysInfo uvType={infoType}
+        onClose={
+          () => setInfoType(null)
+          } />
       </Html>
     </>
   );
