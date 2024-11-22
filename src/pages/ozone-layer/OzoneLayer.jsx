@@ -2,7 +2,7 @@
 import { Canvas } from "@react-three/fiber";
 import {
   Line,
-  Text,
+  Text3D,
   useTexture,
   Stars,
   Html,
@@ -20,34 +20,51 @@ import IntroCard from "./IntroCard";
 
 // Componente RaysInfo
 const RaysInfo = ({ uvType, onClose }) => {
-  let content = '';
+  let content = "";
 
   // Contenido para cada tipo de UV
   switch (uvType) {
-    case 'UVB':
-      content = 'UVB (Ultravioleta B) es responsable de quemaduras solares y daño a la piel.';
+    case "UVB":
+      content =
+        "UVB (Ultravioleta B) es responsable de quemaduras solares y daño a la piel.";
       break;
-    case 'UVA':
-      content = 'UVA (Ultravioleta A) penetra más profundamente en la piel y es responsable de envejecimiento prematuro.';
+    case "UVA":
+      content =
+        "UVA (Ultravioleta A) penetra más profundamente en la piel y es responsable de envejecimiento prematuro.";
       break;
-    case 'UVC':
-      content = 'UVC (Ultravioleta C) es la forma más peligrosa, pero afortunadamente es absorbida por la capa de ozono.';
+    case "UVC":
+      content =
+        "UVC (Ultravioleta C) es la forma más peligrosa, pero afortunadamente es absorbida por la capa de ozono.";
       break;
     default:
-      content = 'Información no disponible.';
+      content = "Información no disponible.";
   }
 
   return (
     uvType && (
-      <div style={{
-        backgroundColor: 'white', padding: '10px', borderRadius: '10px', boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.2)',
-        fontSize: '14px', width: '300px', color: 'black'
-      }}>
+      <div
+        style={{
+          backgroundColor: "white",
+          padding: "10px",
+          borderRadius: "10px",
+          boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
+          fontSize: "14px",
+          width: "300px",
+          color: "black",
+        }}
+      >
         <h3>{uvType} - Información</h3>
         <p>{content}</p>
-        <button onClick={onClose} style={{
-          backgroundColor: 'red', color: 'white', padding: '5px 10px', border: 'none', borderRadius: '5px'
-        }}>
+        <button
+          onClick={onClose}
+          style={{
+            backgroundColor: "red",
+            color: "white",
+            padding: "5px 10px",
+            border: "none",
+            borderRadius: "5px",
+          }}
+        >
           Cerrar
         </button>
       </div>
@@ -59,7 +76,6 @@ RaysInfo.propTypes = {
   uvType: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
 };
-
 
 const Scene = () => {
   const MATERIAL_PATH = useMemo(
@@ -73,7 +89,7 @@ const Scene = () => {
     `${MATERIAL_PATH}ao_1k.jpg`,
   ]);
   const handleClick = (uvType) => {
-    console.log('infoType actualizado a: ', uvType);
+    console.log("infoType actualizado a: ", uvType);
     setInfoType(uvType);
   };
 
@@ -115,8 +131,6 @@ const Scene = () => {
       window.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
-
-
 
   // Función para manejar la interactividad del teclado
   const handleKeyDown = (event) => {
@@ -193,25 +207,39 @@ const Scene = () => {
       />
 
       {/* Texto con animación flotante */}
-      <Float size={0.5} position={[5, 3, 3]} factor={7} speed={7}>
-        <Text
-          color="white"
-          fontSize={0.5}
-          maxWidth={200}
-          lineHeight={1}
-          letterSpacing={0.02}
-          textAlign="center"
-          anchorX="center"
-          anchorY="middle"
-          outlineWidth={0.05}
-          outlineColor="blue"
+      <Float size={0.5} position={[5, 3, 3]} factor={0.1} speed={1}>
+        <Text3D
+          position={[1.8, 2, -4]}
+          font="/fonts/clouts.json"
+          height={0.5}
+          curveSegments={32}
+          bevelEnabled
+          bevelSize={0.02}
+          bevelThickness={0.03}
+          letterSpacing={-0.05}
         >
           La Capa de Ozono
-        </Text>
+          <meshStandardMaterial
+            attach="material"
+            color="blue"
+            metalness={0.2}
+            roughness={0.5}
+          />
+          <meshStandardMaterial
+            attach="material-side"
+            color="#000000"
+            metalness={0.1}
+            roughness={0.8}
+          />
+        </Text3D>
       </Float>
 
       {/* Esfera que representa la capa de ozono */}
-      <mesh castShadow position={[-5, 0, 0]} rotation={rotate ? [0, 0.01, 0] : [0, 0, 0]}>
+      <mesh
+        castShadow
+        position={[-5, 0, 0]}
+        rotation={rotate ? [0, 0.01, 0] : [0, 0, 0]}
+      >
         <sphereGeometry args={[4, 200, 200]} />
         <meshStandardMaterial
           map={colorMap}
@@ -266,32 +294,91 @@ const Scene = () => {
       />
 
       {/* Textos indicativos con funcionalidad de clic */}
-      <Html
-        position={[1.6, 5.4, 0]}
-        center
-        style={{ cursor: "pointer" }}
+      <Text3D
+        scale={[0.3, 0.3, 0.3]}
+        position={[1.5, 2.8, 5]}
+        font="/fonts/roboto_bold_italic.json"
+        height={0.5}
+        curveSegments={32}
+        bevelEnabled
+        bevelSize={0.02}
+        bevelThickness={0.03}
+        letterSpacing={-0.05}
+        onClick={() => handleClick("UVB")}
+        onPointerOver={(e) => {
+          document.body.style.cursor = "pointer";
+          e.object.material.color.set("orange");
+        }}
+        onPointerOut={(e) => {
+          document.body.style.cursor = "default";
+          e.object.material.color.set("blue");
+        }}
       >
-        <div className="ray-card" style={{ color: "blue", fontSize: "16px" }} onClick={() => handleClick("UVB")}>
-          UVB
-        </div>
-      </Html>
-      <Html
-        position={[-1.5, 3.5, 0]}
-        center
-        style={{ cursor: "pointer" }}
+        UVB
+        <meshStandardMaterial
+          attach="material"
+          color="blue"
+          metalness={0.2}
+          roughness={0.5}
+        />
+      </Text3D>
+      <Text3D
+        scale={[0.3, 0.3, 0.3]}
+        position={[-0.8, 1.3, 5]}
+        fontSize={0.5}
+        font="/fonts/roboto_bold_italic.json"
+        height={0.5}
+        curveSegments={32}
+        bevelEnabled
+        bevelSize={0.02}
+        bevelThickness={0.03}
+        letterSpacing={-0.05}
+        onClick={() => handleClick("UVC")}
+        onPointerOver={(e) => {
+          document.body.style.cursor = "pointer";
+          e.object.material.color.set("orange");
+        }}
+        onPointerOut={(e) => {
+          document.body.style.cursor = "default";
+          e.object.material.color.set("blue");
+        }}
       >
-        <div className="ray-card" style={{ color: "blue", fontSize: "16px" }} onClick={() => handleClick("UVC")}>
-          UVC
-        </div>
-      </Html>
-      <Html
-        position={[0.5, 4, 0]}
-        center
-        
-        style={{ cursor: "pointer" }}
+        UVC
+        <meshStandardMaterial
+          attach="material"
+          color="blue"
+          metalness={0.2}
+          roughness={0.5}
+        />
+      </Text3D>
+      <Text3D
+        scale={[0.3, 0.3, 0.3]}
+        position={[0.2, 2, 5]}
+        font="/fonts/roboto_bold_italic.json"
+        height={0.5}
+        curveSegments={32}
+        bevelEnabled
+        bevelSize={0.02}
+        bevelThickness={0.03}
+        letterSpacing={-0.05}
+        onClick={() => handleClick("UVA")}
+        onPointerOver={(e) => {
+          document.body.style.cursor = "pointer";
+          e.object.material.color.set("orange");
+        }}
+        onPointerOut={(e) => {
+          document.body.style.cursor = "default";
+          e.object.material.color.set("blue");
+        }}
       >
-        <div className="ray-card" style={{ color: "blue", fontSize: "16px" }} onClick={() => handleClick("UVA") }>UVA</div>
-      </Html>
+        UVA
+        <meshStandardMaterial
+          attach="material"
+          color="blue"
+          metalness={0.2}
+          roughness={0.5}
+        />
+      </Text3D>
 
       {/* Panel HTML explicativo */}
       <Html
@@ -313,13 +400,8 @@ const Scene = () => {
       >
         <IntroCard />
       </Html>
-      <Html
-      position={[-7, -1, 0]}
-      >
-        <RaysInfo uvType={infoType}
-        onClose={
-          () => setInfoType(null)
-          } />
+      <Html position={[-7, -1, 0]}>
+        <RaysInfo uvType={infoType} onClose={() => setInfoType(null)} />
       </Html>
     </>
   );
