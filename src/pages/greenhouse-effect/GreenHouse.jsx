@@ -21,6 +21,8 @@ import Cubemap from './Cubemap';
 import ZoomButton3D from './ZoomButton3D';
 import InfoButton3D from './InfoButton3D';
 import Stars from './Stars';
+import BouncingRays from './BouncingRays';
+import * as THREE from 'three';
 
 const GreenHouse = () => {
   const [zoomedIn, setZoomedIn] = useState(false); // Inicia con zoom hecho
@@ -30,6 +32,8 @@ const GreenHouse = () => {
   const groupRef = useRef();
   const [groupPosition, setGroupPosition] = useState([0, 0, 0]); // Posición del grupo
   const [buttonPosition, setButtonPosition] = useState([0, 0.7, 0]);
+  const onImpactRef = useRef();
+  const sunPosition = new THREE.Vector3(5, 0, 5); // Posición del Sol
 
   // Función para alternar zoom
   const toggleZoom = () => {
@@ -106,11 +110,14 @@ const GreenHouse = () => {
           <group ref={groupRef} position={groupPosition}>
             <Cubemap images={cubemapImages} />
             <ambientLight intensity={0.1} />
-            <directionalLight position={[5, 0, 5]} intensity={1.5} castShadow />
+            <directionalLight position={sunPosition.toArray()} intensity={1.5} castShadow />
             <pointLight position={[-10, 10, -10]} intensity={0.5} />
-            <EarthModel />
+            <EarthModel onImpact={(fn) => (onImpactRef.current = fn)} />
             <OzoneLayer />
             <Moon />
+            <BouncingRays onImpact={(worldPosition) => onImpactRef.current && onImpactRef.current(worldPosition)}
+            sunPosition={sunPosition}
+            />
 
             {showText && (
               <Html position={[2, 0, -5]} distanceFactor={8} transform>
@@ -128,6 +135,7 @@ const GreenHouse = () => {
               toggleZoom={toggleZoom}
               buttonPosition={buttonPosition}
             />
+
 
             <InfoButton3D
               modelUrl="/models/greenhouse/infoModel.glb"

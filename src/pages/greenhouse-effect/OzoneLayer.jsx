@@ -29,7 +29,7 @@ function OzoneLayer() {
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
     >
-      <sphereGeometry args={[0.52, 64, 64]} />
+      <sphereGeometry args={[0.60, 64, 64]} />
       <meshPhysicalMaterial
         transparent
         opacity={0.3}
