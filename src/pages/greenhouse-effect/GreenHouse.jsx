@@ -23,6 +23,7 @@ import InfoButton3D from './InfoButton3D';
 import Stars from './Stars';
 import BouncingRays from './BouncingRays';
 import * as THREE from 'three';
+import  HelpModel from './HelpModel';
 
 const GreenHouse = () => {
   const [zoomedIn, setZoomedIn] = useState(false); // Inicia con zoom hecho
@@ -115,6 +116,8 @@ const GreenHouse = () => {
             <EarthModel onImpact={(fn) => (onImpactRef.current = fn)} />
             <OzoneLayer />
             <Moon />
+
+            <HelpModel />
             <BouncingRays onImpact={(worldPosition) => onImpactRef.current && onImpactRef.current(worldPosition)}
             sunPosition={sunPosition}
             />
