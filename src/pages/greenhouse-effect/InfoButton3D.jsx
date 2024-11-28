@@ -42,7 +42,9 @@
 
         {/* Texto debajo del modelo GLTF */}
         <Html position={[-1.2, 0, 0]} center>
-          <div style={{
+          <div
+            onClick={handleClick}
+            style={{
             color: 'white',
             fontSize: '20px',
             fontWeight: 'bold',

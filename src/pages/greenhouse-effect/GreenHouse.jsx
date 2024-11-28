@@ -21,16 +21,22 @@ import Cubemap from './Cubemap';
 import ZoomButton3D from './ZoomButton3D';
 import InfoButton3D from './InfoButton3D';
 import Stars from './Stars';
+import BouncingRays from './BouncingRays';
+import * as THREE from 'three';
+import  HelpModel from './HelpModel';
 
 const GreenHouse = () => {
-  const [zoomedIn, setZoomedIn] = useState(false);
+  const [zoomedIn, setZoomedIn] = useState(false); // Inicia con zoom hecho
   const [showText, setShowText] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const cameraRef = useRef();
   const groupRef = useRef();
-  const [groupPosition, setGroupPosition] = useState([0, 0, 0]);
+  const [groupPosition, setGroupPosition] = useState([0, 0, 0]); // Posición del grupo
   const [buttonPosition, setButtonPosition] = useState([0, 0.7, 0]);
+  const onImpactRef = useRef();
+  const sunPosition = new THREE.Vector3(5, 0, 5); // Posición del Sol
 
+  // Función para alternar zoom
   const toggleZoom = () => {
     if (zoomedIn) {
       setShowText(true);
@@ -42,6 +48,7 @@ const GreenHouse = () => {
     setZoomedIn(!zoomedIn);
   };
 
+  // Ajustar la posición y escala al hacer zoom
   useEffect(() => {
     if (cameraRef.current && groupRef.current) {
       if (zoomedIn) {
@@ -57,6 +64,34 @@ const GreenHouse = () => {
       cameraRef.current.updateProjectionMatrix();
     }
   }, [zoomedIn]);
+
+  // Eventos de teclado para mover la escena
+  const handleKeyDown = (event) => {
+    let [x, y, z] = groupPosition;
+
+    if (event.key === 'ArrowUp') {
+      z -= 0.1; // Mover hacia adelante
+    }
+    if (event.key === 'ArrowDown') {
+      z += 0.1; // Mover hacia atrás
+    }
+    if (event.key === 'ArrowLeft') {
+      x -= 0.1; // Mover hacia la izquierda
+    }
+    if (event.key === 'ArrowRight') {
+      x += 0.1; // Mover hacia la derecha
+    }
+
+    setGroupPosition([x, y, z]);
+  };
+
+  // Añadir y limpiar el listener para las teclas
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [groupPosition]);
 
   const cubemapImages = [
     '/cubemapSpace/right.png',
@@ -76,11 +111,16 @@ const GreenHouse = () => {
           <group ref={groupRef} position={groupPosition}>
             <Cubemap images={cubemapImages} />
             <ambientLight intensity={0.1} />
-            <directionalLight position={[5, 0, 5]} intensity={1.5} castShadow />
+            <directionalLight position={sunPosition.toArray()} intensity={1.5} castShadow />
             <pointLight position={[-10, 10, -10]} intensity={0.5} />
-            <EarthModel />
+            <EarthModel onImpact={(fn) => (onImpactRef.current = fn)} />
             <OzoneLayer />
             <Moon />
+
+            <HelpModel />
+            <BouncingRays onImpact={(worldPosition) => onImpactRef.current && onImpactRef.current(worldPosition)}
+            sunPosition={sunPosition}
+            />
 
             {showText && (
               <Html position={[2, 0, -5]} distanceFactor={8} transform>
@@ -98,6 +138,7 @@ const GreenHouse = () => {
               toggleZoom={toggleZoom}
               buttonPosition={buttonPosition}
             />
+
 
             <InfoButton3D
               modelUrl="/models/greenhouse/infoModel.glb"

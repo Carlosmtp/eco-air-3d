@@ -52,7 +52,9 @@ function ZoomButton3D({ zoomedIn, toggleZoom, buttonPosition }) {
         side={THREE.FrontSide}
       />
       <Html center>
-        <div style={{
+        <div
+          onClick={handleClick}
+          style={{
           color: 'white',
           fontSize: '20px',
           fontWeight: 'bold',
