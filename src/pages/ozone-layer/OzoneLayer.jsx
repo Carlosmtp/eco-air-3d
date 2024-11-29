@@ -12,6 +12,7 @@ import {
 import UserInfo from "../world/UserInfo";
 import Earth from "../login/Earth";
 import Clouds from "../login/Clouds";
+import { useNavigate } from "react-router-dom";
 import "./OzoneLayer.css";
 import { useMemo, useState, useEffect } from "react";
 import PropTypes from "prop-types";
@@ -408,12 +409,24 @@ const Scene = () => {
 };
 
 const OzoneLayer = () => {
+  const navigate = useNavigate();
   return (
     <div className="ozone-layer-container">
       <UserInfo />
       <div className="ozone-canvas">
         <Canvas shadows camera={{ position: [0, 0, 10], fov: 70 }}>
           <Scene />
+          <Html
+          position={[-1,-4,0]}>
+            <button
+              className="top-button"
+              onClick={() =>
+                navigate("/ozone-layer-physics")
+              }
+            >
+              Ver Simulación ➡️
+            </button>
+          </Html>
         </Canvas>
       </div>
     </div>

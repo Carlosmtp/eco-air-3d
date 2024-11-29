@@ -54,6 +54,7 @@ body {
   cursor: pointer;
   font-size: 16px;
   z-index: 1000;
+  white-space: nowrap;
 }
 
 .top-button:hover {

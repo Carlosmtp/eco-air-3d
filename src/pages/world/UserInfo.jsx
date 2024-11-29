@@ -53,13 +53,13 @@ const UserInfo = () => {
 
       <div className="buttons-container">
         <button className="top-button" onClick={() => navigate("/welcome", { state: { scrollPosition: 140 } })}>
-          Home
+          Inicio
         </button>
         <button className="top-button" onClick={() => alert("Top 10 feature is currently under development.")}>
-          Top 10
+          Puntuaciones
         </button>
         <button className="exit-button" onClick={handleExit}>
-          Exit
+          Salir
         </button>
       </div>
     </>
