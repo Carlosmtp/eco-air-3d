@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-no-undef */
-/* eslint-disable react/no-unknown-property */
 import { Canvas } from "@react-three/fiber";
 import { useNavigate } from "react-router-dom";
 import { Box, Sphere } from "@react-three/drei";
@@ -14,64 +12,55 @@ import Hand from "./Hand";
 const OzoneLayerPhysics = () => {
   const navigate = useNavigate();
   const [rays, setRays] = useState([]);
-  const [ozoneVisible, setOzoneVisible] = useState(true); // Estado para la visibilidad de la capa de ozono
+  const [ozoneVisible, setOzoneVisible] = useState(true);
+  const [showSolutions, setShowSolutions] = useState(false); // Estado para mostrar la tarjeta
   const layerRef = useRef();
   const [scrollPos, setScrollPos] = useState(0);
 
-  // Función para generar rayos en posiciones aleatorias
   const spawnRay = () => {
     setRays((prev) => [
       ...prev,
       {
         id: Date.now(),
-        position: [Math.random() * 20 - 10, 10, 0], // Genera un rayo en una posición X aleatoria
-        bounces: 0, // Agregar contador de rebotes
+        position: [Math.random() * 20 - 10, 10, 0],
+        bounces: 0,
       },
     ]);
   };
 
-  // Generar rayos cada 1 segundo
   useEffect(() => {
     const interval = setInterval(() => {
       spawnRay();
     }, 1000);
-    return () => clearInterval(interval); // Limpieza del intervalo
+    return () => clearInterval(interval);
   }, []);
 
-  // Cambiar color temporal de la capa al impactar
   const handleImpact = (id) => {
     if (layerRef.current) {
       const material = layerRef.current.material;
       material.color = new Color("red");
       setTimeout(() => {
         material.color = new Color("blue");
-      }, 200); // Duración del cambio
+      }, 200);
     }
 
-    // Incrementar contador de rebotes y eliminar la bola después del segundo rebote
-    setRays((prev) => {
-      return prev.map((ray) =>
-        ray.id === id
-          ? {
-              ...ray,
-              bounces: ray.bounces + 1,
-            }
-          : ray
-      );
-    });
+    setRays((prev) =>
+      prev.map((ray) =>
+        ray.id === id ? { ...ray, bounces: ray.bounces + 1 } : ray
+      )
+    );
   };
 
-  // Filtrar rayos que ya han tenido dos rebotes
   const activeRays = rays.filter((ray) => ray.bounces < 2);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrollPos(window.scrollY / 50); // Ajusta la escala según sea necesario
+      setScrollPos(window.scrollY / 50);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll); // Limpieza del evento
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -95,16 +84,13 @@ const OzoneLayerPhysics = () => {
               castShadow
             />
 
-            {/* Contexto de físicas */}
             <Physics gravity={[0, -9.8, 0]} colliders="cuboid">
-              {/* Ciudades (estáticas) */}
               <RigidBody type="fixed" colliders="trimesh">
                 <City position={[-12, -7.5, 0]} scale={[2.1, 2.1, 2.1]} />
                 <City position={[-0.1, -7.5, 0]} scale={[2.1, 2.1, 2.1]} />
                 <City position={[13, -7.5, 0]} scale={[2.1, 2.1, 2.1]} />
               </RigidBody>
 
-              {/* Capa de ozono (estática), controlada por el estado 'ozoneVisible' */}
               {ozoneVisible && (
                 <RigidBody type="fixed">
                   <Box
@@ -115,22 +101,21 @@ const OzoneLayerPhysics = () => {
                     <meshStandardMaterial
                       color="blue"
                       transparent
-                      opacity={0.3} // Semitransparente
+                      opacity={0.3}
                     />
                   </Box>
                 </RigidBody>
               )}
 
-              {/* Rayos dinámicos con rebotes */}
               {activeRays.map((ray) => (
                 <RigidBody
                   key={ray.id}
                   position={ray.position}
-                  restitution={[1]} // Sin rebote en el "roto"
-                  friction={0.1} // Baja fricción para simular un deslizamiento fluido
-                  onCollisionEnter={() => handleImpact(ray.id)} // Cambiar color al impactar
+                  restitution={[1]}
+                  friction={0.1}
+                  onCollisionEnter={() => handleImpact(ray.id)}
                   colliders="ball"
-                  lockTranslations={[true, false, true]} // Bloquear los ejes X y Z (solo permite movimiento en el eje Y)
+                  lockTranslations={[true, false, true]}
                 >
                   <Sphere args={[0.2, 16, 16]}>
                     <meshStandardMaterial color="yellow" emissive="yellow" />
@@ -138,7 +123,7 @@ const OzoneLayerPhysics = () => {
                 </RigidBody>
               ))}
             </Physics>
-            {/* Explicación dentro de la simulación */}
+
             <Html
               position={[-15, 5, 0]}
               transform
@@ -150,10 +135,6 @@ const OzoneLayerPhysics = () => {
                 boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
                 padding: "20px",
                 fontSize: "20px",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
                 backgroundColor: "white",
                 color: "black",
               }}
@@ -168,6 +149,7 @@ const OzoneLayerPhysics = () => {
                 </p>
               </div>
             </Html>
+
             <Html
               position={[15, 5, 0]}
               transform
@@ -179,10 +161,6 @@ const OzoneLayerPhysics = () => {
                 boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
                 padding: "20px",
                 fontSize: "20px",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
                 backgroundColor: "white",
                 color: "black",
               }}
@@ -196,17 +174,61 @@ const OzoneLayerPhysics = () => {
                 </p>
               </div>
             </Html>
-            <Html position={[-20, -5, 0]}>
-              <div className="icono-entrar" onClick={() => navigate("/ozone-layer")}>
-                <i className="fas fa-arrow-left"></i>
-              </div>
+
+            <Html position={[16, -6, 0]}>
+              <button
+                className="top-button"
+                onClick={() => setShowSolutions(true)}
+              >
+                Soluciones ➡️
+              </button>
             </Html>
-            <Hand
-            position={[4.5,2,0]}/>
+
+            {/* Nueva tarjeta de soluciones dentro del Html */}
+            {showSolutions && (
+              <Html
+              scale={[2.5, 2.5, 2.5]}
+                position={[0, 0, 0]}
+                transform
+                distanceFactor={8}
+                style={{
+                  width: "300px",
+                  height: "auto",
+                  backgroundColor: "white",
+                  padding: "15px",
+                  borderRadius: "10px",
+                  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
+                  color: "black",
+                  textAlign: "center",
+                }}
+              >
+                <div>
+                  <h3>Soluciones para la Capa de Ozono</h3>
+                  <ul>
+                    <li>Reducir el uso de CFCs.</li>
+                    <li>Fomentar energías renovables.</li>
+                    <li>Proteger y reforestar áreas verdes.</li>
+                  </ul>
+                  <button
+                    onClick={() => setShowSolutions(false)}
+                    style={{
+                      marginTop: "10px",
+                      padding: "5px 10px",
+                      backgroundColor: "red",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "5px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Cerrar
+                  </button>
+                </div>
+              </Html>
+            )}
           </Canvas>
         </div>
 
-        {/* Botón para alternar la capa de ozono */}
         <button
           className="ozone-toggle-button"
           onClick={() => setOzoneVisible((prev) => !prev)}
