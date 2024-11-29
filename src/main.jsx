@@ -11,6 +11,7 @@ import Login from './pages/login/Login.jsx'
 import World from './pages/world/World.jsx'
 import Greenhouse from './pages/greenhouse-effect/GreenHouse.jsx'
 import OzoneLayer from './pages/ozone-layer/OzoneLayer.jsx'
+import OzoneLayerPhysics from './pages/ozone-layer/OzoneLayerPhysics.jsx';
 import Smog from './pages/smog/Smog.jsx'
 import Welcome from './pages/world/Welcome.jsx'
 
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
   {
     path: "/ozone-layer",
     element: <OzoneLayer />,
+  },
+  {
+    path: "/ozone-layer-physics",
+    element: <OzoneLayerPhysics />,
   },
   {
     path: "/smog",
