@@ -13,16 +13,18 @@ import { useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { useRef } from 'react';
 
+
+
 const LittleCity = (props) => {
+  
     const { nodes, materials } = useGLTF('/models/smogcity/littlecity.glb');
-    
     const cityRef = useRef();
 
-    useFrame((state, delta) => {
+   { useFrame((state, delta) => {
         if (cityRef.current) {
-            cityRef.current.rotation.y += delta * 0.5;
+            cityRef.current.rotation.y += delta * 0.4;
         }
-    });
+    }); }
 
     return (
         <group ref={cityRef} {...props} dispose={null}>

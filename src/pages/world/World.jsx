@@ -138,14 +138,10 @@ const World = () => {
             <OrbitControls enablePan={false} enableZoom={false} />
             <RotatingCube />
           </Canvas>
-          <h2 className="canvas-title">Efecto Invernadero</h2>
+          <h2 className="canvas-title">El Impacto del Efecto Invernadero en Nuestro Clima</h2>
           <p className="canvas-description">
-            El efecto invernadero es el proceso por el cual ciertos gases
-            atrapan el calor en la atmósfera, manteniendo la Tierra habitable.
-            Sin embargo, las actividades humanas han intensificado este
-            fenómeno, provocando el calentamiento global y sus efectos: aumento
-            de temperaturas, derretimiento de glaciares y fenómenos climáticos
-            extremos.
+            Aunque el efecto invernadero es un proceso natural, su intensificación por la actividad humana está alterando los patrones climáticos globales. El aumento de gases como el CO2 y el metano está provocando un rápido cambio en las condiciones climáticas, resultando en eventos extremos como tormentas más intensas y aumento de las temperaturas.
+            Es crucial que comprendamos cómo nuestras acciones afectan el planeta, ya que el cambio climático puede tener repercusiones devastadoras sobre los ecosistemas y las comunidades humanas si no reducimos nuestras emisiones.
           </p>
         </div>
 
