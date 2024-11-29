@@ -18,6 +18,7 @@ import { useMemo, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import * as THREE from "three";
 import IntroCard from "./IntroCard";
+import Hand from "./Hand";
 
 // Componente RaysInfo
 const RaysInfo = ({ uvType, onClose }) => {
@@ -411,25 +412,36 @@ const Scene = () => {
 const OzoneLayer = () => {
   const navigate = useNavigate();
   return (
-    <div className="ozone-layer-container">
-      <UserInfo />
-      <div className="ozone-canvas">
-        <Canvas shadows camera={{ position: [0, 0, 10], fov: 70 }}>
-          <Scene />
-          <Html
-          position={[-1,-4,0]}>
-            <button
-              className="top-button"
-              onClick={() =>
-                navigate("/ozone-layer-physics")
-              }
-            >
-              Ver Simulación ➡️
-            </button>
-          </Html>
-        </Canvas>
+    <>
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      ></link>
+      <div className="ozone-layer-container">
+        <UserInfo />
+        <div className="ozone-canvas">
+          <Canvas shadows camera={{ position: [0, 0, 10], fov: 70 }}>
+            <Scene />
+            <Html position={[-1, -4, 0]}>
+              <button
+                className="top-button"
+                onClick={() => navigate("/ozone-layer-physics")}
+              >
+                Ver Simulación ➡️
+              </button>
+            </Html>
+            <Html position={[-13, -3.4, 0]}>
+              <div
+                className="icono-entrar"
+                onClick={() => navigate("/welcome", { state: { scrollPosition: 140 } })}
+              >
+                <i className="fas fa-arrow-left"></i>
+              </div>
+            </Html>
+          </Canvas>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
