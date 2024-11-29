@@ -4,7 +4,7 @@
  * @date Created: 05/09/2024
  * @date Last Modified: 31/10/2024
  * @author Carlos Mauricio Tovar Parra
- */import "./UserInfo.css";
+ */ import "./UserInfo.css";
 import { useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
 import useAuthStore from "../../stores/use-auth-store";
@@ -39,9 +39,18 @@ const UserInfo = () => {
     <>
       <div className="user-info">
         {user && user.photoURL ? (
-          <img className="user-photo" src={user.photoURL} alt="User Profile" crossOrigin="anonymous" />
+          <img
+            className="user-photo"
+            src={user.photoURL}
+            alt="User Profile"
+            crossOrigin="anonymous"
+          />
         ) : (
-          <img className="user-photo" src="default-profile.png" alt="Default Profile" />
+          <img
+            className="user-photo"
+            src="default-profile.png"
+            alt="Default Profile"
+          />
         )}
 
         {user && user.displayName ? (
@@ -52,10 +61,20 @@ const UserInfo = () => {
       </div>
 
       <div className="buttons-container">
-        <button className="top-button" onClick={() => navigate("/welcome")}>
+        <button
+          className="top-button"
+          onClick={() =>
+            navigate("/welcome", { state: { scrollPosition: 140 } })
+          }
+        >
           Inicio
         </button>
-        <button className="top-button" onClick={() => alert("Top 10 feature is currently under development.")}>
+        <button
+          className="top-button"
+          onClick={() =>
+            alert("Top 10 feature is currently under development.")
+          }
+        >
           Puntuaciones
         </button>
         <button className="exit-button" onClick={handleExit}>

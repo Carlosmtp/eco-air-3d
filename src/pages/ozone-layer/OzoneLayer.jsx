@@ -18,7 +18,6 @@ import { useMemo, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import * as THREE from "three";
 import IntroCard from "./IntroCard";
-import Hand from "./Hand";
 
 // Componente RaysInfo
 const RaysInfo = ({ uvType, onClose }) => {
