@@ -187,8 +187,8 @@ const OzoneLayerPhysics = () => {
             {/* Nueva tarjeta de soluciones dentro del Html */}
             {showSolutions && (
               <Html
-              scale={[2.5, 2.5, 2.5]}
-                position={[0, 0, 0]}
+              scale={[1.5, 1.5, 1.5]}
+                position={[0, 2, 0]}
                 transform
                 distanceFactor={8}
                 style={{
