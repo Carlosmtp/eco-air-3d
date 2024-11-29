@@ -226,6 +226,9 @@ const OzoneLayerPhysics = () => {
                 </div>
               </Html>
             )}
+            <Hand
+            position={[3, 1, 0]}
+            />
           </Canvas>
         </div>
 
