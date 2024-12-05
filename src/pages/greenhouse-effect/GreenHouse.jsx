@@ -24,6 +24,7 @@ import Stars from './Stars';
 import BouncingRays from './BouncingRays';
 import * as THREE from 'three';
 import  HelpModel from './HelpModel';
+import FadingAudio from './FadingAudio';
 
 const GreenHouse = () => {
   const [zoomedIn, setZoomedIn] = useState(false); // Inicia con zoom hecho
@@ -35,7 +36,6 @@ const GreenHouse = () => {
   const [buttonPosition, setButtonPosition] = useState([0, 0.7, 0]);
   const onImpactRef = useRef();
   const sunPosition = new THREE.Vector3(5, 0, 5); // Posición del Sol
-  const audioRef = useRef(null);
 
   // Función para alternar zoom
   const toggleZoom = () => {
@@ -64,12 +64,6 @@ const GreenHouse = () => {
       }
       cameraRef.current.updateProjectionMatrix();
     }
-        // Reproducir audio al cargar la sección
-    if (audioRef.current) {
-      audioRef.current.play().catch((error) => {
-        console.warn('Error al reproducir el audio:', error);
-      });
-    } // Solo se ejecuta al cargar el componente
   }, [zoomedIn]);
 
   // Eventos de teclado para mover la escena
@@ -111,7 +105,7 @@ const GreenHouse = () => {
 
   return (
     <div className="greenhouse-container">
-      <audio ref={audioRef} src="/sounds/greenhouse-sound.mp3" loop preload="auto" />
+      <FadingAudio audioSrc="/sounds/greenhouse-sound.mp3" fadeDuration={3} />
       <UserInfo />
       <Canvas shadows camera={{ position: [0, 0, 2], fov: 50 }} onCreated={({ camera }) => (cameraRef.current = camera)}>
         <Suspense fallback={null}>
