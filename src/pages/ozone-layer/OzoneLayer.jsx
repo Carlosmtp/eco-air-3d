@@ -15,6 +15,7 @@ import Clouds from "../login/Clouds";
 import { useNavigate } from "react-router-dom";
 import "./OzoneLayer.css";
 import { useMemo, useState, useEffect } from "react";
+import { EffectComposer, Bloom, Vignette, DepthOfField } from "@react-three/postprocessing";
 import PropTypes from "prop-types";
 import * as THREE from "three";
 import IntroCard from "./IntroCard";
@@ -222,9 +223,12 @@ const Scene = () => {
           La Capa de Ozono
           <meshStandardMaterial
             attach="material"
-            color="blue"
+            color="white"
             metalness={0.2}
             roughness={0.5}
+            emissive="blue" // Resplandor azul
+            emissiveIntensity={0.1} // Intensidad del resplandor
+            toneMapped={false} // Mantiene los colores vivos
           />
           <meshStandardMaterial
             attach="material-side"
@@ -251,6 +255,23 @@ const Scene = () => {
           opacity={opacity}
         />
       </mesh>
+      <EffectComposer
+      multisampling={0} // Desactiva el multisampling
+      disableGamma={false} // Desactiva la corrección gamma
+      resolutionScale={0.5} // Escala de resolución
+      >
+        <Bloom
+          intensity={0.5} // Intensidad del efecto bloom
+          luminanceThreshold={2} // Umbral de luminancia
+          luminanceSmoothing={0.9} // Suavizado
+        />
+        <DepthOfField
+          focusDistance={0.02} // Distancia focal
+          focalLength={0.1} // Longitud focal
+          bokehScale={2} // Tamaño del bokeh
+        />
+        <Vignette eskil={false} offset={0.1} darkness={0.1} /> {/* Efecto de viñeta */}
+      </EffectComposer>
 
       {/* Líneas que representan la luz solar */}
       <Line

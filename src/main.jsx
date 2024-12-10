@@ -14,6 +14,8 @@ import OzoneLayer from './pages/ozone-layer/OzoneLayer.jsx'
 import OzoneLayerPhysics from './pages/ozone-layer/OzoneLayerPhysics.jsx';
 import Smog from './pages/smog/Smog.jsx'
 import Welcome from './pages/world/Welcome.jsx'
+import TopTen from './pages/quiz/TopTen.jsx';
+import Quiz from './pages/quiz/Quiz.jsx';
 
 // Configure the router paths.
 const router = createBrowserRouter([
@@ -44,6 +46,14 @@ const router = createBrowserRouter([
   {
     path: "/Welcome",
     element: <Welcome />,
+  },
+  {
+    path: "/top-ten",
+    element: <TopTen />,
+  },
+  {
+    path: "/quiz",
+    element: <Quiz />,
   }
 ]);
 

@@ -1,10 +1,4 @@
-/**
- * @file UserInfo.js
- * @description This component displays the user's information (photo and name) and provides an exit button to sign out.
- * @date Created: 05/09/2024
- * @date Last Modified: 31/10/2024
- * @author Carlos Mauricio Tovar Parra
- */ import "./UserInfo.css";
+import "./UserInfo.css";
 import { useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
 import useAuthStore from "../../stores/use-auth-store";
@@ -33,24 +27,28 @@ const UserInfo = () => {
     return <p>Loading user information...</p>;
   }
 
-  console.log("User data:", user);
-
   return (
-    <>
+    <div className="top-bar">
       <div className="user-info">
         {user && user.photoURL ? (
-          <img
-            className="user-photo"
-            src={user.photoURL}
-            alt="User Profile"
-            crossOrigin="anonymous"
-          />
+          <div className="profile-container">
+            <img
+              className="user-photo"
+              src={user.photoURL}
+              alt="User Profile"
+              crossOrigin="anonymous"
+            />
+            <div className="score-circle">{user.puntuacion}</div>
+          </div>
         ) : (
-          <img
-            className="user-photo"
-            src="default-profile.png"
-            alt="Default Profile"
-          />
+          <div className="profile-container">
+            <img
+              className="user-photo"
+              src="default-profile.png"
+              alt="Default Profile"
+            />
+            <div className="score-circle">{user ? user.puntuacion : 0}</div>
+          </div>
         )}
 
         {user && user.displayName ? (
@@ -72,7 +70,15 @@ const UserInfo = () => {
         <button
           className="top-button"
           onClick={() =>
-            alert("Top 10 feature is currently under development.")
+            navigate("/quiz")
+          }
+        >
+          Quiz
+        </button>
+        <button
+          className="top-button"
+          onClick={() =>
+            navigate("/top-ten")
           }
         >
           Puntuaciones
@@ -81,7 +87,7 @@ const UserInfo = () => {
           Salir
         </button>
       </div>
-    </>
+    </div>
   );
 };
 

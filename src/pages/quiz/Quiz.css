@@ -1,0 +1,88 @@
+.top-ten {
+    text-align: center;
+    margin: 20px auto;
+    max-width: 600px;
+    background-color: #f5f5f5; /* Fondo suave para la tabla */
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .top-ten-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    border-radius: 10px;
+  }
+  
+  .top-ten-table th,
+  .top-ten-table td {
+    border: 1px solid #ddd;
+    text-align: center;
+    white-space: nowrap;
+  }
+  
+  .top-ten-table th {
+    background-color: #4CAF50; /* Color verde moderado */
+    color: white;
+    font-weight: bold;
+  }
+  
+  .top-ten-table tr:nth-child(even) {
+    background-color: #f2f2f2; /* Color de fondo alternado para mejor contraste */
+  }
+  
+  .top-ten-table tr:hover {
+    background-color: #ddd; /* Fondo al pasar el cursor por encima */
+  }
+  
+  .highlight-row {
+    background-color: #ffeb3b !important; /* Amarillo brillante para resaltar */
+    font-weight: bold;
+    color: #000; /* Contraste para mejor legibilidad */
+  }
+  
+  .top-ten-table tr {
+    background-color: #ffffff;
+    color: #333;
+  }
+  
+  .current-user-rank {
+    margin-top: 20px;
+    font-size: 1.1em;
+    color: #333;
+    background-color: #e3f2fd; /* Fondo claro para resaltar la sección */
+    padding: 10px;
+    border-radius: 8px;
+  }
+  
+  h2 {
+    color: #1a237e; /* Color suave para el título */
+    font-family: 'Arial', sans-serif;
+  }
+  
+  button {
+    background-color: #1976D2; /* Color azul para botones */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  button:hover {
+    background-color: #1565C0; /* Efecto hover en botones */
+  }
+  
+  button:active {
+    background-color: #0d47a1; /* Efecto al hacer clic */
+  }
+  
+.top-ten-canvas {
+  text-align: center;
+  top: 0;
+  left: 0;
+    width: 100%;
+    height: 100%;
+  position: absolute;
+}
