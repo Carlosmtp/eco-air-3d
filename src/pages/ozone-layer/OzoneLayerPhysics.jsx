@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 import { Canvas } from "@react-three/fiber";
 import { useNavigate } from "react-router-dom";
 import { Box, Sphere } from "@react-three/drei";
@@ -8,6 +9,16 @@ import { Html } from "@react-three/drei";
 import UserInfo from "../world/UserInfo";
 import City from "./City";
 import Hand from "./Hand";
+import {
+  EffectComposer,
+  Bloom,
+  DepthOfField,
+  Vignette,
+} from "@react-three/postprocessing";
+
+// Importa el archivo de sonido (reemplaza con la ruta correcta)
+import bounceSound from '../../../public/bounce.mp3'; 
+import bounceNoOzoneSound from '../../../public/remove-ozone.mp3';
 
 const OzoneLayerPhysics = () => {
   const navigate = useNavigate();
@@ -16,6 +27,10 @@ const OzoneLayerPhysics = () => {
   const [showSolutions, setShowSolutions] = useState(false); // Estado para mostrar la tarjeta
   const layerRef = useRef();
   const [scrollPos, setScrollPos] = useState(0);
+
+  // Crea una nueva instancia de audio
+  const bounceAudio = new Audio(bounceSound); 
+  const bounceNoOzoneAudio = new Audio(bounceNoOzoneSound);
 
   const spawnRay = () => {
     setRays((prev) => [
@@ -42,6 +57,12 @@ const OzoneLayerPhysics = () => {
       setTimeout(() => {
         material.color = new Color("blue");
       }, 200);
+    }
+
+    if (!ozoneVisible) {
+      bounceNoOzoneAudio.play();
+    } else {
+      bounceAudio.play();
     }
 
     setRays((prev) =>
@@ -123,7 +144,9 @@ const OzoneLayerPhysics = () => {
                 </RigidBody>
               ))}
             </Physics>
-
+            <EffectComposer>
+              <Bloom luminanceThreshold={0} luminanceSmoothing={0.9} height={300} />
+            </EffectComposer>
             <Html
               position={[-15, 5, 0]}
               transform
@@ -187,7 +210,7 @@ const OzoneLayerPhysics = () => {
             {/* Nueva tarjeta de soluciones dentro del Html */}
             {showSolutions && (
               <Html
-              scale={[1.5, 1.5, 1.5]}
+                scale={[1.5, 1.5, 1.5]}
                 position={[0, 2, 0]}
                 transform
                 distanceFactor={8}
@@ -226,9 +249,15 @@ const OzoneLayerPhysics = () => {
                 </div>
               </Html>
             )}
-            <Hand
-            position={[4.2, 1.8, 0]}
-            />
+            <Hand position={[4.2, 1.8, 0]} />
+            <Html position={[-20, -5, 0]}>
+              <div
+                className="icono-entrar"
+                onClick={() => navigate("/ozone-layer")}
+              >
+                <i className="fas fa-arrow-left"></i>
+              </div>
+            </Html>
           </Canvas>
         </div>
 
