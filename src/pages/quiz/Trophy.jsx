@@ -91,7 +91,7 @@ const Trophy = ({ type = 'gold', ...props }) => {
       <Text
         position={[0, -0.4, 0]}
         fontSize={0.09}
-        color={color}
+        color="black"
         anchorX="center"
         anchorY="middle"
       >
