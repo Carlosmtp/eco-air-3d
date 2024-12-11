@@ -1,6 +1,7 @@
 import useAuthStore from "../../stores/use-auth-store";
 import "./Quiz.css";
 import UserInfo from "../world/UserInfo";
+import CollectorGame from "./CollectorGame";
 
 const Quiz = () => {
   const { user, updatePuntuacion } = useAuthStore();
@@ -23,6 +24,7 @@ const Quiz = () => {
     <div className="quiz-container">
       {user ? (
         <>
+          <CollectorGame />
           <h2>{`Bienvenido, ${user.displayName}`}</h2>
           <p>{`Tu puntuación actual: ${user.puntuacion}`}</p>
           <div className="score-buttons">
