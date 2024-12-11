@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
 import { auth } from "../../firebase.config";
-import { doc, setDoc, getDoc } from 'firebase/firestore';
-import { db } from '../../firebase.config';
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { db } from "../../firebase.config";
 
 const provider = new GoogleAuthProvider();
 
@@ -23,14 +23,25 @@ const useAuthStore = create((set) => ({
             const userDoc = await getDoc(userDocRef);
 
             if (!userDoc.exists()) {
+                // Crear nuevo documento con puntuación inicial
                 await setDoc(userDocRef, {
                     email: user.email,
                     displayName: user.displayName,
                     photoURL: user.photoURL,
                     uid: user.uid,
+                    puntuacion: 0, // Inicialización
                 });
-                set({ user: { email: user.email, displayName: user.displayName, photoURL: user.photoURL, uid: user.uid } });
+                set({
+                    user: {
+                        email: user.email,
+                        displayName: user.displayName,
+                        photoURL: user.photoURL,
+                        uid: user.uid,
+                        puntuacion: 0,
+                    },
+                });
             } else {
+                // Traer datos existentes del usuario, incluyendo puntuación
                 const userData = userDoc.data();
                 user = { ...user, ...userData };
                 set({ user });
@@ -43,6 +54,7 @@ const useAuthStore = create((set) => ({
     logout: async () => {
         try {
             await signOut(auth);
+            set({ user: null });
             console.log("User signed out successfully");
         } catch (error) {
             console.log(`Error signing out: ${error.message}`);
@@ -57,8 +69,7 @@ const useAuthStore = create((set) => ({
                 const userDoc = await getDoc(userDocRef);
                 if (userDoc.exists()) {
                     const userData = userDoc.data();
-                    console.log("User data from Firestore:", userData); // Debug
-                    set({ user: userData, loading: false });
+                    set({ user: { ...userData, puntuacion: userData.puntuacion || 0 }, loading: false });
                 } else {
                     console.warn("User authenticated but no document found in Firestore.");
                     set({ user: null, loading: false });
@@ -67,6 +78,32 @@ const useAuthStore = create((set) => ({
                 set({ user: null, loading: false });
             }
         });
+    },
+
+    updatePuntuacion: async (delta, isAddition) => {
+        const { user } = useAuthStore.getState(); // Obtener usuario actual
+        if (user && user.uid) {
+            try {
+                const currentPuntuacion = user.puntuacion || 0; // Asegurarse de que haya una puntuación inicial
+                const newPuntuacion = isAddition
+                    ? currentPuntuacion + delta
+                    : currentPuntuacion - delta;
+
+                const userDocRef = doc(db, "users", user.uid);
+                // Actualizar puntuación en Firestore
+                await setDoc(userDocRef, { puntuacion: newPuntuacion }, { merge: true });
+
+                // Actualizar estado en Zustand
+                set((state) => ({
+                    user: { ...state.user, puntuacion: newPuntuacion },
+                }));
+                console.log("Puntuación actualizada correctamente a:", newPuntuacion);
+            } catch (error) {
+                console.error("Error actualizando la puntuación:", error);
+            }
+        } else {
+            console.error("No hay un usuario autenticado para actualizar la puntuación.");
+        }
     },
 }));
 
