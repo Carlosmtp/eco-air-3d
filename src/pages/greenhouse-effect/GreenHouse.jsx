@@ -25,6 +25,8 @@ import Stars from './Stars';
 import BouncingRays from './BouncingRays';
 import * as THREE from 'three';
 import  HelpModel from './HelpModel';
+import FadingAudio from './FadingAudio';
+import { EffectComposer, Bloom } from '@react-three/postprocessing';
 
 const GreenHouse = () => {
   const [zoomedIn, setZoomedIn] = useState(false); // Inicia con zoom hecho
@@ -107,13 +109,21 @@ const GreenHouse = () => {
     <>
     <UserInfo />
     <div className="greenhouse-container">
-      <Canvas shadows camera={{ position: [0, 0, 2], fov: 50 }} onCreated={({ camera }) => (cameraRef.current = camera)}>
+      <FadingAudio audioSrc="/sounds/greenhouse-sound.mp3" fadeDuration={3} />
+      <Canvas shadows camera={{ position: [0, 0, 2], fov: 50 }} onCreated={({ camera }) => (cameraRef.current = camera)} >
         <Suspense fallback={null}>
           <Stars />
           <group ref={groupRef} position={groupPosition}>
             <Cubemap images={cubemapImages} />
             <ambientLight intensity={0.1} />
-            <directionalLight position={sunPosition.toArray()} intensity={1.5} castShadow />
+            <directionalLight
+              position={sunPosition.toArray()}
+              intensity={1.5}
+              castShadow
+              shadow-mapSize-width={1024}
+              shadow-mapSize-height={1024}
+              shadow-camera-far={30}
+            />
             <pointLight position={[-10, 10, -10]} intensity={0.5} />
             <EarthModel onImpact={(fn) => (onImpactRef.current = fn)} />
             <OzoneLayer />
@@ -123,6 +133,8 @@ const GreenHouse = () => {
             <BouncingRays onImpact={(worldPosition) => onImpactRef.current && onImpactRef.current(worldPosition)}
             sunPosition={sunPosition}
             />
+
+
 
             {showText && (
               <Html position={[2, 0, -5]} distanceFactor={8} transform>
@@ -148,6 +160,11 @@ const GreenHouse = () => {
               description="Más Información"
             />
           </group>
+
+          <EffectComposer multisampling={1} resolutionScale={0.5}>
+            <Bloom intensity={0.5} adaptive luminanceThreshold={0.3} luminanceSmoothing={0.4} />
+          </EffectComposer>
+
         </Suspense>
         <OrbitControls />
       </Canvas>
