@@ -27,16 +27,17 @@
   }
   
   .score-circle {
+    padding: 3px;
     position: absolute;
-    bottom: -5px; /* Adjust this value to control the position */
+    bottom: -5px;
     right: -5px;
     background-color: #ffeb3b;
     color: black;
     font-weight: bold;
     font-size: 12px;
     border-radius: 50%;
-    width: 20px;
-    height: 20px;
+    width: fit-content;
+    height: fit-content;
     display: flex;
     justify-content: center;
     align-items: center;
