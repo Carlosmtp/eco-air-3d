@@ -3,6 +3,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import useAuthStore from "../../stores/use-auth-store";
+import PlayerModel from './PlayerModel';
 
 const INITIAL_TIME = 60;
 const GOOD_ITEM_TIME_BONUS = 5;
@@ -332,7 +333,7 @@ const CollectorGame = () => {
     if (!gameOver && itemsInitialized && !showIntroModal) {
       const totalItems = harmfulItems.length + goodItems.length + neutralItems.length + temporalItems.length + trapItems.length;
       if (totalItems === 0) {
-        endGame("¡No quedan moléculas! Juego terminado.");
+        endGame("¡No quedan moléculas! Quizz Terminado.");
       }
     }
   }, [harmfulItems, goodItems, neutralItems, temporalItems, trapItems, gameOver, endGame, showIntroModal, itemsInitialized]);
@@ -390,13 +391,20 @@ const CollectorGame = () => {
           background:'rgba(100,100,100,0.8)' ,color:'#fff',zIndex:999,display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center',padding:'20px',textAlign:'center'
         }}>
           <h2 style={{ color: '#fff' }}>Instrucciones del Minijuego</h2>
-          <p>Usa únicamente las flechas del teclado para mover el recolector (esfera azul).</p>
+          <p>Usa únicamente las flechas del teclado para mover el recolector (Nave).</p>
           <div style={{textAlign:'left',maxWidth:'400px', margin:'0 auto'}}>
-            <p><span style={{display:'inline-block', width:'20px', height:'20px', background:'green', borderRadius:'50%', marginRight:'5px'}}></span><strong>Moléculas Verdes (Buenas):</strong> Aumentan tu puntuación y añaden tiempo. Mejoran la capa de ozono.</p>
-            <p><span style={{display:'inline-block', width:'20px', height:'20px', background:'black', borderRadius:'50%', marginRight:'5px'}}></span><strong>Moléculas Negras (Malas):</strong> Reducen tu puntuación y tu tiempo.</p>
-            <p><span style={{display:'inline-block', width:'20px', height:'20px', background:'gray', borderRadius:'50%', marginRight:'5px'}}></span><strong>Moléculas Grises (Neutras):</strong> No afectan tus puntos ni tiempo.</p>
-            <p><span style={{display:'inline-block', width:'20px', height:'20px', background:'blue', borderRadius:'50%', marginRight:'5px'}}></span><strong>Moléculas Azules (Temporales):</strong> Activan efectos positivos temporales (ej: doble puntos).</p>
-            <p><span style={{display:'inline-block', width:'20px', height:'20px', background:'red', borderRadius:'50%', marginRight:'5px'}}></span><strong>Moléculas Rojas (Trampa):</strong> Invierten tus controles u otros efectos negativos temporales.</p>
+
+            <p><span style={{display:'inline-block', width:'20px', height:'20px', background:'green', borderRadius:'50%', marginRight:'5px'}}></span><strong>Moléculas Verdes (Buenas):</strong> Como O2 (oxígeno), suman puntos, añaden tiempo y mejoran la capa de ozono.</p>
+
+            <p><span style={{display:'inline-block', width:'20px', height:'20px', background:'black', borderRadius:'50%', marginRight:'5px'}}></span><strong>Moléculas Negras (Malas):</strong> Como CO2 (dióxido de carbono), restan puntos y tiempo.</p>
+
+            <p><span style={{display:'inline-block', width:'20px', height:'20px', background:'gray', borderRadius:'50%', marginRight:'5px'}}></span><strong>Moléculas Grises (Neutras):</strong> Como N2 (nitrógeno), no afectan tus puntos ni tu tiempo.</p>
+
+            <p><span style={{display:'inline-block', width:'20px', height:'20px', background:'blue', borderRadius:'50%', marginRight:'5px'}}></span><strong>Moléculas Azules (Temporales):</strong> Como H2O (agua), brindan efectos positivos temporales (ej. doble puntaje).</p>
+
+            <p><span style={{display:'inline-block', width:'20px', height:'20px', background:'red', borderRadius:'50%', marginRight:'5px'}}></span><strong>Moléculas Rojas (Trampa):</strong> Como NOx (óxidos de nitrógeno), invierten tus controles temporalmente.</p>
+
+
           </div>
           <p>Evita salir del área delimitada. Un objeto central emite pulsos que te empujan.</p>
           <button onClick={() => {
@@ -418,7 +426,7 @@ const CollectorGame = () => {
         </mesh>
 
         {/* Jugador */}
-        <Player position={playerPos} size={PLAYER_SIZE} />
+        <PlayerModel position={playerPos} />
 
         {/* Render ítems sólo si están inicializados y el juego ya empezó */}
         {!showIntroModal && itemsInitialized && (
