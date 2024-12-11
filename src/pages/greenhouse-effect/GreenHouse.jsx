@@ -109,6 +109,7 @@ const GreenHouse = () => {
     <>
     <UserInfo />
     <div className="greenhouse-container">
+      <Canvas shadows camera={{ position: [0, 0, 2], fov: 50 }} onCreated={({ camera }) => (cameraRef.current = camera)}>
       <FadingAudio audioSrc="/sounds/greenhouse-sound.mp3" fadeDuration={3} />
       <Canvas shadows camera={{ position: [0, 0, 2], fov: 50 }} onCreated={({ camera }) => (cameraRef.current = camera)} >
         <Suspense fallback={null}>
