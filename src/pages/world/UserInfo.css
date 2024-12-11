@@ -8,6 +8,7 @@
     align-items: center;
     justify-content: center;
     text-align: center;
+    z-index: 100000;
   }
   
   .profile-container {
