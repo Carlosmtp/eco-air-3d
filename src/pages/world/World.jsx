@@ -43,7 +43,6 @@ const RotatingCube = () => {
 
 // Title3D - Componente que renderiza el título en 3D y lo mueve según el mouse.
 const Title3D = () => {
-  const font = new FontLoader().load("/path/to/font.json"); // Reemplaza con la ruta de tu fuente
   const titleRef = useRef();
 
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
@@ -75,7 +74,6 @@ const Title3D = () => {
   return (
     <Text
       ref={titleRef}
-      font={font}
       scale={[3, 3, 3]} // Ajuste de escala para texto más pequeño
       position={[8, 1.5, -4]} // Posición en la escena, ajustada más cerca de la cámara
       color="#000000" // Color del texto
