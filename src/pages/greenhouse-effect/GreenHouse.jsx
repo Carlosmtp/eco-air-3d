@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 /**
  * @file GreenHouse.jsx
 * GreenHouse component renders an interactive 3D scene that simulates the Greenhouse Effect.
@@ -105,9 +106,10 @@ const GreenHouse = () => {
   ];
 
   return (
+    <>
+    <UserInfo />
     <div className="greenhouse-container">
       <FadingAudio audioSrc="/sounds/greenhouse-sound.mp3" fadeDuration={3} />
-      <UserInfo />
       <Canvas shadows camera={{ position: [0, 0, 2], fov: 50 }} onCreated={({ camera }) => (cameraRef.current = camera)} >
         <Suspense fallback={null}>
           <Stars />
@@ -181,6 +183,7 @@ const GreenHouse = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 
