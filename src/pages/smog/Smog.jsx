@@ -279,7 +279,7 @@ const Smog = () => {
         <button onClick={handleNext} className="next-button">Siguiente</button>
         {/* Audio de fondo */}
       <audio autoPlay loop style={{ display: "none" }}>
-        <source src="/public/sounds/ambient-sound.mp3" type="audio/mp3" />
+        <source src="/sounds/ambient-sound.mp3" type="audio/mp3" />
       </audio>
       </div>
     </div>
