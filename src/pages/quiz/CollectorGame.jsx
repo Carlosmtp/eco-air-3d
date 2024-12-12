@@ -283,6 +283,9 @@ const CollectorGame = () => {
             if (doublePointsActive) points *= 2;
             if (user && user.puntuacion > 0) updatePuntuacion(points, false);
             setTimeLeft((prev) => Math.max(prev - BAD_ITEM_TIME_PENALTY, 0));
+            if (environmentState > 0) {
+              setEnvironmentState((prev) => Math.max(prev - 5, 0));
+            }
           }
           break;
         case "neutral":
@@ -301,7 +304,7 @@ const CollectorGame = () => {
             TRAP_EFFECT_DURATION * 1000
           );
           if (environmentState > 0) {
-            setEnvironmentState((prev) => Math.max(prev - 10, 0));
+            setEnvironmentState((prev) => Math.max(prev - 5, 0));
           }
           break;
         default:
