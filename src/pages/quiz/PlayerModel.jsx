@@ -1,3 +1,12 @@
+/**
+ * @file PlayerModel.jsx
+ * @description This component is the one that helps us with the loading of the model that we will use in the quiz scene.
+ * @date Created: 03/12/2024
+ * @updated: 11/12/2024
+ * @author Andres Mauricio Ortiz
+ *         ortiz.andres@correounivalle.edu.co
+ */
+
 import React, { useEffect } from 'react';
 import { useGLTF } from '@react-three/drei';
 

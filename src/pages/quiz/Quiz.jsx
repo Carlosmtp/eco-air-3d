@@ -1,3 +1,13 @@
+/**
+ * @file CollectorGame.jsx
+ * @description This component is the one in charge of the entire minigame in general of the quiz tab.
+ * @date Created: 03/12/2024
+ * @updated: 11/12/2024
+ * @author Andres Mauricio Ortiz
+ *         ortiz.andres@correounivalle.edu.co
+ * 
+ */
+
 import useAuthStore from "../../stores/use-auth-store";
 import "./Quiz.css";
 import UserInfo from "../world/UserInfo";
