@@ -13,14 +13,15 @@ import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import useAuthStore from "../../stores/use-auth-store";
 import PlayerModel from './PlayerModel';
+import { useNavigate } from 'react-router-dom';
 
-const INITIAL_TIME = 60;
-const GOOD_ITEM_TIME_BONUS = 5;
-const BAD_ITEM_TIME_PENALTY = 5;
+const INITIAL_TIME = 30;
+const GOOD_ITEM_TIME_BONUS = 2;
+const BAD_ITEM_TIME_PENALTY = 2;
 const AREA_SIZE = 5;
 const PLAYER_SPEED = 0.1;
 const ITEM_SIZE = 0.1;
-const PLAYER_SIZE = 0.15;
+const PLAYER_SIZE = 0.2;
 
 const ITEM_COUNT_HARMFUL = 3;
 const ITEM_COUNT_GOOD = 3;
@@ -144,6 +145,7 @@ function PulseObject({ onPulse }) {
 }
 
 const CollectorGame = () => {
+  const navigate = useNavigate();
   const { user, updatePuntuacion } = useAuthStore();
   const [playerPos, setPlayerPos] = useState([0, 0.15, 0]);
   const [timeLeft, setTimeLeft] = useState(INITIAL_TIME);
@@ -234,6 +236,9 @@ const CollectorGame = () => {
         if (newTime <= 0) {
           clearInterval(interval);
           endGame("¡El tiempo se ha agotado! Examen finalizado.");
+
+          // Redirigir a la página de resultados
+          navigate("/top-ten");
         }
         return newTime;
       });
@@ -286,26 +291,36 @@ const CollectorGame = () => {
   }, [user, updatePuntuacion, gameOver, doublePointsActive]);
 
   const removeItem = (item) => {
+    const regenerateItem = (type, color) => ({
+      id: Math.random().toString(36).substring(7),
+      position: randomPosition(4),
+      size: ITEM_SIZE,
+      color,
+      type,
+      velocity: randomVelocity()
+    });
+  
     switch (item.type) {
       case 'good':
-        setGoodItems(current => current.filter(i => i.id !== item.id));
+        setGoodItems(current => [...current.filter(i => i.id !== item.id), regenerateItem('good', 'green')]);
         break;
       case 'harmful':
-        setHarmfulItems(current => current.filter(i => i.id !== item.id));
+        setHarmfulItems(current => [...current.filter(i => i.id !== item.id), regenerateItem('harmful', 'black')]);
         break;
       case 'neutral':
-        setNeutralItems(current => current.filter(i => i.id !== item.id));
+        setNeutralItems(current => [...current.filter(i => i.id !== item.id), regenerateItem('neutral', 'gray')]);
         break;
       case 'temporal':
-        setTemporalItems(current => current.filter(i => i.id !== item.id));
+        setTemporalItems(current => [...current.filter(i => i.id !== item.id), regenerateItem('temporal', 'blue')]);
         break;
       case 'trap':
-        setTrapItems(current => current.filter(i => i.id !== item.id));
+        setTrapItems(current => [...current.filter(i => i.id !== item.id), regenerateItem('trap', 'red')]);
         break;
       default:
         break;
     }
   };
+  
 
   const handlePulse = useCallback(() => {
     if (gameOver || showIntroModal) return;
@@ -359,7 +374,7 @@ const CollectorGame = () => {
   const barWidth = 200;
   const envBarStyle = {
     position: 'absolute',
-    top: '10px', left: '50%',
+    top: '70px', left: '50%',
     transform: 'translateX(-50%)',
     width: `${barWidth}px`,
     height: '20px',
@@ -381,7 +396,7 @@ const CollectorGame = () => {
       <div style={envBarStyle}>
         <div style={envFillStyle}></div>
       </div>
-      <div style={{position:'absolute', top:'-10px', left:'50%', transform:'translateX(-50%)', color:'#fff', zIndex:11}}>
+      <div style={{position:'absolute', top:'70px', left:'50%', transform:'translateX(-50%)', color:'#fff', zIndex:11}}>
         <p style={{margin:0, padding:'0 5px'}}>Capa de Ozono</p>
       </div>
 
@@ -431,7 +446,7 @@ const CollectorGame = () => {
         {/* Plano base */}
         <mesh rotation={[-Math.PI / 2, 0, 0]}>
           <planeGeometry args={[AREA_SIZE*2, AREA_SIZE*2]} />
-          <meshStandardMaterial color="#444" />
+          <meshStandardMaterial color="#CFD8DC"/>
         </mesh>
 
         {/* Jugador */}

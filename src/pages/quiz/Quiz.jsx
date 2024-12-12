@@ -5,7 +5,7 @@
  * @updated: 11/12/2024
  * @author Andres Mauricio Ortiz
  *         ortiz.andres@correounivalle.edu.co
- * 
+ *
  */
 
 import useAuthStore from "../../stores/use-auth-store";
@@ -30,22 +30,10 @@ const Quiz = () => {
 
   return (
     <>
-    <UserInfo />
-    <div className="quiz-container">
-      {user ? (
-        <>
-          <CollectorGame />
-          <h2>{`Bienvenido, ${user.displayName}`}</h2>
-          <p>{`Tu puntuación actual: ${user.puntuacion}`}</p>
-          <div className="score-buttons">
-            <button onClick={handleScoreIncrease}>Aumentar puntuación</button>
-            <button onClick={handleScoreDecrease}>Bajar puntuación</button>
-          </div>
-        </>
-      ) : (
-        <p>No estás logueado.</p>
-      )}
-    </div>
+      <UserInfo />
+      <div className="quiz-container">
+        <CollectorGame />
+      </div>
     </>
   );
 };
