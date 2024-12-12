@@ -3,7 +3,7 @@
  * @file Smog.jsx
  * @description This component renders a 3D scene of the smog.
  * @date Created: 31/10/2024
- * @date Last Modified: 28/11/2024
+ * @date Last Modified: 11/12/2024
  * @author Jhoimar Silva 
  *         jhoimar.silva@correounivalle.edu.co
  */
@@ -13,6 +13,7 @@ import { Canvas, useThree, useFrame } from "@react-three/fiber";
 import { OrbitControls, Html, Stars, Sky, Cloud, Text } from "@react-three/drei";  
 import * as THREE from 'three'; 
 import { Physics, useSphere } from "@react-three/cannon";
+import { EffectComposer, Bloom, Vignette, DepthOfField } from "@react-three/postprocessing";
 import LittleCity from "./LittleCity"; 
 import UserInfo from "../world/UserInfo";
 import "./Smog.css";
@@ -258,17 +259,28 @@ const Smog = () => {
               minDistance={4}
               maxDistance={8}
             />
-
+            {/* Efectos de Posprocesado */}
+            <EffectComposer
+            multisampling={0} 
+            disableGamma={false} 
+            resolutionScale={0.9} 
+            ></EffectComposer>
             <CameraController />
           </Physics>
         </Canvas>
       </div>
+
+      
 
       {/* Información sobre el smog */}
       <div className="info-container">
         <h3>{pages[pageIndex].title}</h3>
         {pages[pageIndex].content}
         <button onClick={handleNext} className="next-button">Siguiente</button>
+        {/* Audio de fondo */}
+      <audio autoPlay loop style={{ display: "none" }}>
+        <source src="/public/sounds/ambient-sound.mp3" type="audio/mp3" />
+      </audio>
       </div>
     </div>
   );
