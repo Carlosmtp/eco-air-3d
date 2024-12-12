@@ -1,5 +1,5 @@
 /**
- * @file Moon.jsx
+ * @file EarthModel.jsx
  * @description EarthModel component to render a 3D model of Earth with rotation and shadow effects.
  * @returns {JSX.Element} The Earth 3D model primitive with shadows and rotation applied.
  * @date Created: 28/10/2024

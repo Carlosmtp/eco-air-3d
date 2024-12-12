@@ -1,3 +1,13 @@
+/**
+ * @file FadingAudio.jsx
+ * @description  This file takes care of everything related to the sound of the
+ * greenhouse scene, the audio input configuration, output, volume and all the corresponding settings.
+ * @date Created: 30/10/2024
+ * @updated: 5/12/2024
+ * @author Andres Mauricio Ortiz
+ *         ortiz.andres@correounivalle.edu.co
+ */
+
 import { useEffect, useRef } from 'react';
 
 const FadingAudio = ({ audioSrc, fadeDuration = 3 }) => {

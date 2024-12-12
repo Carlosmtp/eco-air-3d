@@ -1,5 +1,5 @@
 /**
- * @file GreenHouse.jsx
+ * @file ZoomButton3D.jsx
  * ZoomButton component that renders a button to toggle zoom in/out on a 3D scene.
  * @param {boolean} zoomedIn - Boolean indicating the current zoom state; true if zoomed in.
  * @param {Function} toggleZoom - Function to toggle the zoom state.
