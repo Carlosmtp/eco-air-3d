@@ -73,7 +73,7 @@ const UserInfo = () => {
             navigate("/quiz")
           }
         >
-          Quiz
+          Minijuego
         </button>
         <button
           className="top-button"
