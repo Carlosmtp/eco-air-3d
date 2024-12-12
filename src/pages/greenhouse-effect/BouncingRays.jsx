@@ -1,3 +1,13 @@
+/**
+ * @file BouncingRays.jsx
+ * @description  This component is responsible for everything related to the yellow and red spheres,
+ * the yellow ones with the rays of light and the red ones the place where they impact.
+ * @date Created: 30/10/2024
+ * @updated: 31/10/2024
+ * @author Andres Mauricio Ortiz
+ *         ortiz.andres@correounivalle.edu.co
+ */
+
 import { useEffect, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';

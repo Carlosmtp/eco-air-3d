@@ -1,5 +1,5 @@
 /**
- * @file Moon.jsx
+ * @file Cubemap.jsx
  * @description  Cubemap component to set a 3D scene background using a cubemap texture.
  * @param {string[]} images - Array of URLs for the cubemap images (right, left, top, bottom, front, back).
  * @date Created: 30/10/2024

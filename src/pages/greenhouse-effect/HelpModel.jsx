@@ -1,3 +1,13 @@
+/**
+ * @file HelpModel.jsx
+ * @description This component displays the help modal and has the configuration of
+ * the model that is displayed for the help
+ * @date Created: 28/10/2024
+ * @updated: 31/10/2024
+ * @author Andres Mauricio Ortiz
+ *         ortiz.andres@correounivalle.edu.co
+ */
+
 import { useState } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { Html } from '@react-three/drei';
